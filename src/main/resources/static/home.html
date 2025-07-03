@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body>
+<h1>Home Page</h1>
+
+<div id="text"></div>
+<img id="image" alt="Dynamic Image" />
+
+<script>
+    fetch('/home-data')
+        .then(response => response.json())
+        .then(data => {
+            // Show the strings
+            const textDiv = document.getElementById('text');
+            textDiv.innerText = data.strings.join(' ');
+
+            // Set the image
+            const image = document.getElementById('image');
+            image.src = data.imgUrl;
+        });
+</script>
+</body>
+</html>
