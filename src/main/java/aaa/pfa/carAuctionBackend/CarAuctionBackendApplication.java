@@ -9,7 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CarAuctionBackendApplication implements CommandLineRunner {
+public class CarAuctionBackendApplication
+//		implements CommandLineRunner
+{
 
 	public static void main(String[] args) {
 
@@ -25,8 +27,8 @@ public class CarAuctionBackendApplication implements CommandLineRunner {
 		this.carRepository = carRepository;
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
+//	@Override
+//	public void run(String... args) throws Exception {
 //		User Asuka = new User(
 //				"frenchgirllover69",
 //				"$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9f9q0e4bRadue",
@@ -49,7 +51,7 @@ public class CarAuctionBackendApplication implements CommandLineRunner {
 //		f150.setUser(lili);
 //		carRepository.save(corolla);
 //		carRepository.save(f150);
-	}
+//	}
 
 
 
