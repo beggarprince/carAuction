@@ -8,7 +8,10 @@
 <h1>Home Page</h1>
 
 <div id="text"></div>
-<img id="image" alt="Dynamic Image" />
+<img id="image" alt="Dynamic Image" margin="25px" /><br>
+<a id="register" href="/register">
+    Register
+</a>
 
 <script>
     fetch('/home-data')
@@ -23,5 +26,7 @@
             image.src = data.imgUrl;
         });
 </script>
+
+
 </body>
 </html>
