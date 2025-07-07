@@ -27,17 +27,20 @@ public class HomeController {
         strings.add("a bitch");
 
         String url = "/images/temp.png";
-        return new HomeResponse(url, strings);
+        String iconURL = "/images/noImg.png";
+        return new HomeResponse(url, strings, iconURL);
     }
 
     //dto
     public static class HomeResponse{
         public String imgUrl;
         public List<String> strings;
+        public String iconURL;
 
-        public HomeResponse(String url, List<String> string){
+        public HomeResponse(String url, List<String> string, String iconURL) {
             this.imgUrl = url;
             this.strings = string;
+            this.iconURL = iconURL;
         }
 
     }
