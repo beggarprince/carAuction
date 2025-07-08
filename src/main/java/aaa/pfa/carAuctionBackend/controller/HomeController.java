@@ -22,9 +22,7 @@ public class HomeController {
     @GetMapping("/home-data")
     public HomeResponse homePage() {
         List<String> strings = new ArrayList<>();
-        strings.add("You");
-        strings.add("are");
-        strings.add("a bitch");
+        strings.add("This is the dynamic daily message");
 
         String url = "/images/temp.png";
         String iconURL = "/images/noImg.png";
