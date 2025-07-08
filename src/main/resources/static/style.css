@@ -40,11 +40,15 @@ body{
 }
 
 .cellDescription{
-    font-size: 12px;
+    font-size: 14px;
     flex-shrink: 1;     /* Allow text/footer to shrink */
     min-height: 0;
-    border: black 1px;
-    background: lightgray;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    display: -webkit-box;             /* required for line-clamp hack  */
+    -webkit-line-clamp: 3;            /* CHANGE: number of lines shown */
+    -webkit-box-orient: vertical;     /* required for line-clamp hack  */
+
 }
 
 .cellPrice{
@@ -64,4 +68,66 @@ body{
     min-height: 0;
 }
 
+.cellColumnContainer{
+    border: solid black 2px;
+    width: min(1200px, 100%);
+    margin: 0 auto;
+    padding: 4px;
+    columns: 3 300px;
+    column-gap: 1em;
+}
 
+
+.gallery{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1px;
+    gap: 1rem;
+}
+
+.cell{
+    display:flex;
+    flex-direction: column;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.15);
+    border-radius: .25rem;
+    overflow:hidden;
+}
+
+.cellColumnContainer img{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.cell h3, .card p{
+    padding: .75rem 1rem;
+    margin:  0;
+}
+
+ .l1 {
+    display: block;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+.l3{
+    display: flex;
+    margin-bottom: 1em;
+    width: 100%;
+    flex-direction: column;
+    border: black solid 1px;
+}
+
+.l3 p{
+
+}
+
+
+.lPrice{
+    color:green;
+}
+
+.lTextBg{
+    background: darkgray;
+}
