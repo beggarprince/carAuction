@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +29,8 @@ public class SecurityConfig {
 
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.userDetailsService(userDetailsServiceService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsServiceService)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
@@ -43,20 +45,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws
-            Exception {
-        http.csrf((csrf) -> csrf.disable())
-                .sessionManagement((sessionManagement)
-                        -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((authorizeHttpRequests)
-                        -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.GET).permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        //.requestMatchers(HttpMethod.GET, "/home").permitAll()
-                       // .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                        .anyRequest()
-                        .authenticated());
+    public SecurityFilterChain apiChain(HttpSecurity http) throws Exception {
+
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated());
+        System.out.println(">>> API filter chain built!");
         return http.build();
     }
 

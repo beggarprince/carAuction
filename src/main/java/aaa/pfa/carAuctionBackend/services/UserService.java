@@ -4,7 +4,10 @@ package aaa.pfa.carAuctionBackend.services;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,12 +18,17 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UserService(){};
 
-    public UserService(UserRepository userRepository)
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder)
     {
         super();
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User updateUser(Long id, UserDTO dto){
@@ -40,6 +48,23 @@ public class UserService {
         if (dto.lastName != null) {
             user.lastName = dto.lastName;
         }
+
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User register(UserRegisterDTO dto){
+        if(userRepository.existsByUsername(dto.username())){
+            throw new IllegalArgumentException("Username taken");
+        }
+
+        User user = new User(
+                dto.username(),
+                passwordEncoder.encode(dto.password()),
+                "USER",
+                dto.name(),
+                dto.lastName()
+                );
 
         return userRepository.save(user);
     }

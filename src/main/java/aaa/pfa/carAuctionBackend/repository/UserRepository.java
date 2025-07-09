@@ -2,6 +2,7 @@ package aaa.pfa.carAuctionBackend.repository;
 
 
 import aaa.pfa.carAuctionBackend.model.User;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -20,4 +21,6 @@ public interface UserRepository
     @Query
     Optional<User> findByUsername(String username);
 
+
+    boolean existsByUsername(@NotBlank String username);
 }

@@ -16,15 +16,15 @@ public class RegisterCarController {
     public RegisterCarController(JwtService jwtService, AuthenticationManager authMan) {
     }
 
-    @GetMapping("/register")
+    @GetMapping("/registercar")
     public RedirectView register(){
-        return new RedirectView("/register.html");
+        return new RedirectView("/registercar.html");
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registercar")
     public String carRegistration(@ModelAttribute User user){
         System.out.println(user.toString());
-        return "register";
+        return "registercar";
     }
 
 
