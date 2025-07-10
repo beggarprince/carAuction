@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <form   id="registrationForm">
+        <label for="username"></label><input id="username" type="username" placeholder="username" required><br>
+        <label for="password"></label><input id="password" type="password" placeholder="Password" required><br>
+        <label for="name"></label><input id="name" type="text" placeholder="First name" required><br>
+        <input id="lastName" placeholder="Last name" required type="text"><br>
+        <button type="submit">Register</button>
+    </form>
+    <div id="response">Enter credentials</div>
+    <script>
+        const response = document.getElementById('response');
+        const form = document.getElementById('registrationForm');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+        const body = {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+            name: document.getElementById('name').value,
+            lastName: document.getElementById('lastName').value,
+        }
+
+        try {
+            const res = await fetch('http://localhost:8808/api/auth/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
+            });
+            if (res.ok) {
+                const data = await res.json();
+                response.textContent = `Registered (id ${data.id})`;
+                response.style.color = 'green';
+            } else {
+                const text = await res.text();
+                response.textContent = `Error &{res.status}: $text || 'no body}`;
+                response.style.color = 'red';
+            }
+        }
+        catch (err) {
+            response.textContent = 'Network error';
+            response.style.color = 'red';
+        }
+
+        });
+    </script>
+</body>
+</html>

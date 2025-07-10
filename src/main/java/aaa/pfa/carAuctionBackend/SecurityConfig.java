@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll()
                         .anyRequest().authenticated());
         System.out.println(">>> API filter chain built!");
         return http.build();
