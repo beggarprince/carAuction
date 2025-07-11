@@ -11,16 +11,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Collection;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/auth")
 public class LoginController {
     private final JwtService jwtService;
 
@@ -38,6 +36,8 @@ public class LoginController {
         this.jwtService = jwtService;
         this.authMan = authenticationManager;
     }
+
+
 
     @PostMapping("/login")
     public ResponseEntity<?> getToken(@RequestBody

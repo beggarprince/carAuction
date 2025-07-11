@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegisterUserController {
     private UserService userService;
 
+
     public RegisterUserController(){};
 
     @Autowired
