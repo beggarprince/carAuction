@@ -39,14 +39,14 @@ public class UserService {
         new EntityNotFoundException("User not found"));
 
         //this is what we are changing
-        if (dto.username != null) {
-            user.username = dto.username;
+        if (dto.getUsername() != null) {
+            user.username = dto.getUsername();
         }
-        if (dto.name != null) {
-            user.name = dto.name;
+        if (dto.getName() != null) {
+            user.name = dto.getName();
         }
-        if (dto.lastName != null) {
-            user.lastName = dto.lastName;
+        if (dto.getLastName() != null) {
+            user.lastName = dto.getLastName();
         }
 
         return userRepository.save(user);

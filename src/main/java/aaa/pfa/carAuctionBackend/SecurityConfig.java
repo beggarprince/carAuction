@@ -2,6 +2,7 @@ package aaa.pfa.carAuctionBackend;
 
 
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
+import aaa.pfa.carAuctionBackend.security.JwtFilter;
 import aaa.pfa.carAuctionBackend.services.UserDetailsServiceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,11 +29,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
     private final UserDetailsServiceService userDetailsServiceService;
+    private final JwtFilter jwtFilter;
 
-
-    public SecurityConfig(UserDetailsServiceService udss) {
-
-
+    public SecurityConfig(UserDetailsServiceService udss, JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
         this.userDetailsServiceService = udss;
     }
 
@@ -64,8 +64,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(HttpMethod.POST).permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        ;
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         System.out.println(">>> API filter chain built!");
         return http.build();
     }

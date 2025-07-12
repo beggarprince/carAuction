@@ -51,6 +51,7 @@ public class UserController {
 
         User user= userDetailsServiceService.returnByUsername(username);
 
+        System.out.println(user.name);
         return ResponseEntity.ok(
                 new UserDTO(user.username, user.name, user.lastName)
         );
