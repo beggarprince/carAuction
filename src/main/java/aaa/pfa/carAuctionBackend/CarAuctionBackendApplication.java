@@ -57,6 +57,7 @@ public class CarAuctionBackendApplication
 		corolla.setUser(Asuka);
 		f150.setUser(lili);
 		carRepository.save(corolla);
+		//carRepository.save(f150);
 		carRepository.save(f150);
 	}
 
