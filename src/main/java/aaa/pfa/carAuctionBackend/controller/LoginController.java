@@ -18,32 +18,35 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/auth")
+//@RequestMapping("/api/auth")
 public class LoginController {
     private final JwtService jwtService;
 
     private final AuthenticationManager authMan;
 
     @GetMapping("/login")
-    public RedirectView login(){
+    public RedirectView login() {
         return new RedirectView("/login.html");
     }
 
 
     public LoginController(JwtService jwtService,
-                           AuthenticationManager authenticationManager)
-    {
+                           AuthenticationManager authenticationManager) {
         this.jwtService = jwtService;
         this.authMan = authenticationManager;
     }
 
 
-
     @PostMapping("/login")
-    public ResponseEntity<?> getToken(@RequestBody
-                                      AccountCredentials credentials){
+    public ResponseEntity<?> getToken(
+            @RequestBody
+            AccountCredentials credentials) {
+
+        System.out.println("Attempting to get jwt token");
+
         UsernamePasswordAuthenticationToken creds = new
-                UsernamePasswordAuthenticationToken(credentials.username(),
+                UsernamePasswordAuthenticationToken(
+                credentials.username(),
                 credentials.password());
 
         Authentication auth = authMan.authenticate(creds);
@@ -53,9 +56,10 @@ public class LoginController {
 
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,
-                        "Bearer"+jwts)
+                        "Bearer" + jwts)
                 .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,
                         "Authorization")
                 .build();
     }
+
 }

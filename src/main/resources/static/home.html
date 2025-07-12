@@ -15,7 +15,7 @@
 <div style="width: 200px">
     <img src="/images/noImg.png">
 </div>
-    <a id="tempReg" href="/registercar">
+    <a id="tempReg" href="/register">
         Register button
     </a>
 </div>
@@ -41,6 +41,34 @@
 
 <div> WELCOME TO THE CIRCUS OF VALUE</div>
 
+<script>
+    ( async  () => {
+        const token = localStorage.getItem("jwt")
+
+        if(!token) return;
+
+        try{
+            let token = localStorage.getItem("jwt") ?? "";
+            token = token.replace("Bearer", "");     // scrub prefix if it slipped in
+            console.log("My jwt token is " + token)
+            const res = await fetch("/api/users/me",
+                {
+                    headers: {Authorization: `Bearer ${token}`}
+                });
+
+            if(!res.ok) throw new Error(("Unauthorized"))
+
+            const {name} = await res.json();
+
+            localStorage.setItem("name", name);
+
+            document.getElementById("welcome").textContent =
+                `Welcome to the Circus of Value, ${name}`;
+        } catch(err){
+            console.error(err);
+        }
+    })();
+</script>
 
 <section class="cellColumnContainer">
 

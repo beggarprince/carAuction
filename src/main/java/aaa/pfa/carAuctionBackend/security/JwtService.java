@@ -27,15 +27,15 @@ public class JwtService {
     public String generateToken(String username){
 
         String token = Jwts.builder()
-
                 .setSubject(username)
-
                 .setExpiration(new Date(System.currentTimeMillis() + Expiration))
-
                 .signWith(key)
-
                 .compact();
 
+        //System.out.println(token);
+        if(token.startsWith(prefix)){
+            System.out.println("This token has the prefix");
+        }
         return token;
 
     }

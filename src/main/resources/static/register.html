@@ -13,6 +13,11 @@
         <button type="submit">Register</button>
     </form>
     <div id="response">Enter credentials</div>
+    <div>
+        <a href="/login.html">
+            Click Here to Log In
+        </a>
+    </div>
     <script>
         const response = document.getElementById('response');
         const form = document.getElementById('registrationForm');
@@ -29,7 +34,7 @@
 
         try {
             const res = await
-                fetch('http://localhost:8808/api/auth/register', {
+                fetch('http://localhost:8808/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(body)

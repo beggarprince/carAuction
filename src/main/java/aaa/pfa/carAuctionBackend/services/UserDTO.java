@@ -5,4 +5,6 @@ public class UserDTO {
     public String name;
     public String lastName;
 
+    public UserDTO(String username, String name, String lastName) {
+    }
 }

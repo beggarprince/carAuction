@@ -41,10 +41,17 @@ public class CarAuctionBackendApplication
 				"Emilie",
 				"De Rochefort");
 		// Username: user, password: user
+
+		User a = new User("a",
+				"$2a$10$Zbtg3ybemOLxxvZ0ytlXs.nKOdaT6OlxNMjWOKqs7H4q4jRPnpSA6",
+				"USER",
+				"firstName",
+				"lastName");
+
 		userRepository.save(Asuka);
 // Username: admin, password: admin
 		userRepository.save(lili);
-
+		userRepository.save(a);
 		Car corolla = new Car("Toyota", "Corolla", 2000, 1998);
 		Car f150 = new Car("Ford", "F-150", 8000, 2004);
 		corolla.setUser(Asuka);

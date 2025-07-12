@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -28,7 +29,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     private final UserDetailsServiceService userDetailsServiceService;
 
+
     public SecurityConfig(UserDetailsServiceService udss) {
+
+
         this.userDetailsServiceService = udss;
     }
 
@@ -54,16 +58,18 @@ public class SecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                //.formLogin(withDefaults())
-                .formLogin(form -> form.loginPage("/api/auth/login").permitAll())
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(s ->
+                        s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET).permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers(HttpMethod.POST).permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
         System.out.println(">>> API filter chain built!");
         return http.build();
     }
+
 
 
 
