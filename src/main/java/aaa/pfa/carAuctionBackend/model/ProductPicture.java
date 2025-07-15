@@ -9,14 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ProductPicture {
     @Id
     private String id;
-    private String ownerId;
+    private String owner;
 
     private Binary imageData;
 
     public ProductPicture(String ownerId,
                           Binary imageData) {
         super();
-        this.ownerId = ownerId;
+        this.owner = ownerId;
         this.imageData = imageData;
     }
 

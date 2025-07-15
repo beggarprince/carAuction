@@ -3,6 +3,7 @@ package aaa.pfa.carAuctionBackend;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.CarRepository;
+import aaa.pfa.carAuctionBackend.repository.ProductPictureRepository;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,10 +22,14 @@ public class CarAuctionBackendApplication
 	}
 	private final UserRepository userRepository;
 	private final CarRepository carRepository;
+	private final ProductPictureRepository pictureRepository;
 
-	public CarAuctionBackendApplication(UserRepository urp, CarRepository carRepository){
+	public CarAuctionBackendApplication(UserRepository urp,
+										CarRepository carRepository,
+										ProductPictureRepository pictureRepository){
 		this.userRepository = urp;
 		this.carRepository = carRepository;
+		this.pictureRepository = pictureRepository;
 	}
 
 }
