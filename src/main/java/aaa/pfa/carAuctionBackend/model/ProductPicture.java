@@ -24,7 +24,12 @@ public class ProductPicture {
         return id;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
     public Binary getImageData() {
         return imageData;
     }
+
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Image uploader</title></head>
+<body>
+
+<input type="file" id="imgInput" accept="image/*">
+<button id="uploadBtn">Upload</button>
+
+<script>
+  const uploadBtn = document.getElementById('uploadBtn');
+  const fileInput  = document.getElementById('imgInput');
+
+  uploadBtn.addEventListener('click', async () => {
+    if (!fileInput.files.length) {
+      alert('Choose a file first'); return;
+    }
+
+    const formData = new FormData();
+    formData.append('file',  fileInput.files[0]);    // binary payload
+    formData.append('owner', 'alice@example.com');   // whatever “owner” means in your model
+
+    try {
+      const r  = await fetch('/api/images', { method: 'POST', body: formData });
+      if (!r.ok) throw new Error(await r.text());
+      const { id } = await r.json();                 // <-- Mongo _id returned
+      console.log('Stored in Mongo with id=', id);
+
+
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert(err.message);
+    }
+  });
+</script>
+
+</body>
+</html>
