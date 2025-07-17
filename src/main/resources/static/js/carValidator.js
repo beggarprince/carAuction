@@ -1,12 +1,3 @@
-/**
- * @typedef {Object} CarDTO
- * @property {string}  make
- * @property {string}  model
- * @property {number}  year
- * @property {number}  price
- * @property {number} [mileage]   // optional; your table doesn't store it yet
- */
-
 
 export class ValidationError extends Error {
     constructor(message, field) {
@@ -16,13 +7,6 @@ export class ValidationError extends Error {
     }
 }
 
-//DTO validation
-/**
- * Validate the CarDTO.
- * Throws ValidationError on the first problem found.
- * @param {CarDTO} c
- * @returns {true}  – if everything is fine
- */
 
 export function validateCar(c) {
 
@@ -48,7 +32,6 @@ export function validateCar(c) {
         );
     }
 
-    // --- Price --------------------------------------------------------------
     const MAX_PRICE = 10_000_000; // adjust to business rules
     if (!isInt(c.price) || c.price <= 0 || c.price > MAX_PRICE) {
         throw new ValidationError(
@@ -57,7 +40,6 @@ export function validateCar(c) {
         );
     }
 
-    // --- Mileage (optional) -------------------------------------------------
     if (c.mileage !== undefined) {
         const MAX_MILEAGE = 1_000_000; // “not having 1000000000 miles”
         if (!isInt(c.mileage) || c.mileage < 0 || c.mileage > MAX_MILEAGE) {
@@ -68,6 +50,6 @@ export function validateCar(c) {
         }
     }
 
-    return true; // success
+    return true;
 }
 

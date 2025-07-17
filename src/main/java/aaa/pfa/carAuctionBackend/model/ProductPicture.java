@@ -4,19 +4,24 @@ package aaa.pfa.carAuctionBackend.model;
 import jakarta.persistence.Id;
 import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Document("ProductPicture")
 public class ProductPicture {
+
     @Id
+    @Field(targetType = FieldType.OBJECT_ID)
     private String id;
-    private String owner;
 
-    private Binary imageData;
+    private final String owner;
 
-    public ProductPicture(String ownerId,
+    private final Binary imageData;
+
+    public ProductPicture(String owner,
                           Binary imageData) {
         super();
-        this.owner = ownerId;
+        this.owner = owner;
         this.imageData = imageData;
     }
 

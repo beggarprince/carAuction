@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductPictureRepository
 extends MongoRepository<ProductPicture,String> {
+
+
     ProductPicture getById(String id);
 
     List<ProductPicture> getByOwner(String owner);

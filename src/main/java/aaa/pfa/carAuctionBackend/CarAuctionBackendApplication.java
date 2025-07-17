@@ -30,6 +30,16 @@ public class CarAuctionBackendApplication
 		this.userRepository = urp;
 		this.carRepository = carRepository;
 		this.pictureRepository = pictureRepository;
+
+		var pList = pictureRepository.findAll();
+		pList.forEach(p->{
+			//System.out.println( "PICTURE ID:" + p.getId());
+			System.out.println("---- ProductPicture ----");
+			System.out.println("ID: " + p.getId());
+			System.out.println("Owner: " + p.getOwner());
+			System.out.println("ImageData: " + p.getImageData());  // Binary object's toString()
+			System.out.println();
+		});
 	}
 
 }
