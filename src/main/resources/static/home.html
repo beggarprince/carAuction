@@ -18,6 +18,13 @@
     <a id="tempReg" href="/register.html">
         Register button
     </a>
+    <a id="tempLogin" href="/login.html">
+        Login
+    </a>
+    <a id="tempRegCar" href="/uploadCar.html">
+        Upload Car Listing
+    </a>
+
 </div>
 
 <div id="text"></div>
@@ -49,7 +56,7 @@
 
         try{
             let token = localStorage.getItem("jwt") ?? "";
-            token = token.replace("Bearer", "");     // scrub prefix if it slipped in
+            token = token.replace("Bearer", "");
             console.log("My jwt token is " + token)
             const res = await fetch("/api/users/me",
                 {
@@ -59,8 +66,10 @@
             if(!res.ok) throw new Error(("Unauthorized"))
 
             const {name} = await res.json();
+            const{username} = await res.json();
 
             localStorage.setItem("name", name);
+            localStorage.setItem("username", username);
 
             document.getElementById("welcome").textContent =
                 `Welcome to the Circus of Value, ${name}`;

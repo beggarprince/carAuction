@@ -23,19 +23,21 @@ public class Car {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private User user;
+    private User user; //owner
 
     @Column
     private Date datePosted;
 
     public Car(){};
 
-    public Car(String make, String model, int price, int year){
+    public Car(String make, String model, int price, int year, User user){
         this.make = make;
         this.model = model;
         this.price = price;
         this.year = year;
         this.datePosted = new Date();
+        this.user = user;
+        printDetails();
     }
     public void setUser(User user){
         this.user = user;
@@ -68,5 +70,15 @@ public class Car {
 
     public Date getDatePosted() {
         return datePosted;
+    }
+
+    public void printDetails() {
+        System.out.println("Car ID: " + id);
+        System.out.println("Make: " + make);
+        System.out.println("Model: " + model);
+        System.out.println("Year: " + year);
+        System.out.println("Price: " + price);
+        System.out.println("Date Posted: " + datePosted);
+        System.out.println("User: " + (user != null ? user : "None"));
     }
 }

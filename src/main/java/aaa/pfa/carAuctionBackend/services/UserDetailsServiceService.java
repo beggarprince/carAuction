@@ -23,14 +23,14 @@ public class UserDetailsServiceService implements
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("Attempting to find user \"" + username + "\"" );
+        System.out.println("Attempting to find user by username: \"" + username + "\"" );
 
         Optional<User> user = userRepository.findByUsername(username);
         org.springframework.security.core.userdetails.User.UserBuilder builder = null;
 
         if(user.isPresent()){
 
-            System.out.println("Username found type shit");
+            System.out.println("Username found");
 
             User currentUser = user.get();
             builder = org.springframework.security.core.userdetails.

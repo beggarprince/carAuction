@@ -59,7 +59,7 @@ public class JwtService {
     }
 
 
-    private boolean isExpired(Claims claim) {
+    public boolean isExpired(Claims claim) {
         Date exp = claim.getExpiration();
         return exp.before(new Date());
     }

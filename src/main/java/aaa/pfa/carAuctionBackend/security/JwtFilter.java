@@ -65,7 +65,7 @@ public class JwtFilter
                 UserDetails user = userDetailsService
                         .loadUserByUsername(username);
 
-                if (jwtService.isValid(claims , user)) {
+                if (!jwtService.isExpired(claims )) {
                     UsernamePasswordAuthenticationToken auth =
                             new UsernamePasswordAuthenticationToken(
                                     user, null, user.getAuthorities());
