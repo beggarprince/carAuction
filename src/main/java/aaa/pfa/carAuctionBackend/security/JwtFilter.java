@@ -2,11 +2,14 @@ package aaa.pfa.carAuctionBackend.security;
 
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +29,8 @@ public class JwtFilter
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+
 
     public JwtFilter(JwtService jwtService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
@@ -38,61 +43,45 @@ public class JwtFilter
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        /* ---------- 1. Grab the header ---------- */
+
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);   // RULE #1: always continue
+            filterChain.doFilter(request, response);
             return;
         }
 
-        /* ---------- 2. Extract / validate ---------- */
-        String token    = authHeader.substring(7);             // raw JWT
-        String username = extractUsername(token);   // typically the "sub" claim
+        try {
 
-        if (username != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
+            String token = authHeader.substring(7);
+            Claims claims = jwtService.extractAllClaims(token);
 
-            UserDetails user = userDetailsService.loadUserByUsername(username);
+            String username = jwtService.extractUsername(claims);
 
-            if (isValid(token, user)) {
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(
-                                user, null, user.getAuthorities());
 
-                auth.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
+            if (username != null &&
+                    SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                UserDetails user = userDetailsService
+                        .loadUserByUsername(username);
+
+                if (jwtService.isValid(claims , user)) {
+                    UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(
+                                    user, null, user.getAuthorities());
+
+                    auth.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
             }
+        } catch (JwtException | IllegalArgumentException e) {
+            logger.debug("Invalid JWT Token {}", e.getMessage());
         }
 
-        /* ---------- 3. Let the request proceed ---------- */
-        filterChain.doFilter(request, response);       // RULE #2: *always* at the end
+        filterChain.doFilter(request, response);
     }
 
-    public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();  // same as claims.get("sub")
-    }
-
-    /** True if signature is OK, not expired, and matches the user. */
-    public boolean isValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isExpired(token);
-    }
-
-    /* ---------------- private utilities -------------- */
-
-    private boolean isExpired(String token) {
-        Date exp = extractAllClaims(token).getExpiration();
-        return exp.before(new Date());
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(JwtService.key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
 }
 

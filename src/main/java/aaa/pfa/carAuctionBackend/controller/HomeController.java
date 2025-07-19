@@ -10,6 +10,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static aaa.pfa.carAuctionBackend.services.WelcomeService.getWelcomeMessage;
+
 @RestController
 public class HomeController {
 
@@ -21,11 +23,18 @@ public class HomeController {
 
     @GetMapping("/home-data")
     public HomeResponse homePage() {
-        List<String> strings = new ArrayList<>();
-        strings.add("This is the dynamic daily message");
 
+        //List of strings we can pass in
+        List<String> strings = new ArrayList<>();
+
+        String s = getWelcomeMessage();
+        strings.add(s);
+
+
+        //Testing sending dynamic image data
         String url = "/images/temp.png";
         String iconURL = "/images/noImg.png";
+
         return new HomeResponse(url, strings, iconURL);
     }
 

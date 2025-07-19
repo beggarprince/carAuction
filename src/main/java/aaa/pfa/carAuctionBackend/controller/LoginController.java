@@ -29,7 +29,6 @@ public class LoginController {
         return new RedirectView("/login.html");
     }
 
-
     public LoginController(JwtService jwtService,
                            AuthenticationManager authenticationManager) {
         this.jwtService = jwtService;
@@ -49,7 +48,7 @@ public class LoginController {
                 credentials.username(),
                 credentials.password());
 
-        Authentication auth = authMan.authenticate(creds);
+        //Authentication auth = authMan.authenticate(creds);
 
 
         String jwts = jwtService.generateToken(credentials.username());

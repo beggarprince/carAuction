@@ -1,5 +1,6 @@
 package aaa.pfa.carAuctionBackend.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -21,7 +22,7 @@ public class JwtService {
 
     static final String prefix = "Bearer";
 
-    static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     //generate signed token
     public String generateToken(String username){
@@ -32,31 +33,35 @@ public class JwtService {
                 .signWith(key)
                 .compact();
 
-        //System.out.println(token);
-        if(token.startsWith(prefix)){
-            System.out.println("This token has the prefix");
-        }
         return token;
 
     }
 
-    // Get a token from request Authorization header,
-// verify the token, and get username
-    public String getAuthUser(HttpServletRequest request) {
-        String token = request.getHeader
-                (HttpHeaders.AUTHORIZATION);
-        if (token != null) {
-            String user = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token.replace(prefix, ""))
-                    .getBody()
-                    .getSubject();
-            if (user != null)
-                return user;
-        }
-        return null;
+
+    public Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
+
+    public String extractUsername(Claims claim) {
+
+        return claim.getSubject();
+    }
+
+    public boolean isValid(Claims claim, UserDetails userDetails) {
+        final String username = extractUsername(claim);
+
+        return username.equals(userDetails.getUsername()) && !isExpired(claim);
+    }
+
+
+    private boolean isExpired(Claims claim) {
+        Date exp = claim.getExpiration();
+        return exp.before(new Date());
+    }
 
 }
