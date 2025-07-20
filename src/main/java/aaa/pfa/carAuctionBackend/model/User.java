@@ -20,6 +20,7 @@ public class User {
     @Column(nullable = false)
     public String name, lastName;
 
+    @JsonIgnore
     @Column(nullable = false)
     public String password;
 
@@ -36,8 +37,6 @@ public class User {
         this.name = name;
         this.lastName =lastName;
     }
-
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     public List<Car> cars;
 
