@@ -46,7 +46,7 @@
         });
 </script>
 
-<div id="welcome"> WELCOME TO THE CIRCUS OF VALUE</div>
+<div id="welcome">WELCOME TO THE CIRCUS OF VALUE</div>
 
 <script>
     ( async  () => {
@@ -57,7 +57,7 @@
         try{
             let token = localStorage.getItem("jwt") ?? "";
             token = token.replace("Bearer", "");
-            console.log("My jwt token is " + token)
+            //console.log("My jwt token is " + token)
             const res = await fetch("/api/users/me",
                 {
                     headers: {Authorization: `Bearer ${token}`}
@@ -65,14 +65,21 @@
 
             if(!res.ok) throw new Error(("Unauthorized"))
 
-            const {name} = await res.json();
-            const{username} = await res.json();
+            console.log(res);
+
+            const resJson = await res.json();
+            console.log(resJson);
+
+            const {name} = resJson;
+            const {username} = resJson;
+            const {id} = resJson;
 
             localStorage.setItem("name", name);
             localStorage.setItem("username", username);
+            localStorage.setItem("id", id);
 
             document.getElementById("welcome").textContent =
-                `Welcome to the Circus of Value, ${name}`;
+                `Welcome to the Circus of Value, ${name}, username being ${username}\nId:${id}`;
         } catch(err){
             console.error(err);
         }

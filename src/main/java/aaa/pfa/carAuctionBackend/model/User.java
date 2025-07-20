@@ -13,7 +13,8 @@ public class User {
     @Column(nullable = false, updatable = false)
     public Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false,
+            unique = true)
     public String username;
 
     @Column(nullable = false)

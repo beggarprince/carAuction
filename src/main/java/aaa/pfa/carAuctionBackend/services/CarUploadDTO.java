@@ -10,7 +10,7 @@ public record CarUploadDTO(
         @NotBlank String model,
         @NotBlank int year,
         @NotBlank int price,
-        @NotBlank User user
+        @NotBlank Long id
 ) {
 
 }

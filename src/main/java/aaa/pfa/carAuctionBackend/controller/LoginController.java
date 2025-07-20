@@ -41,12 +41,12 @@ public class LoginController {
             @RequestBody
             AccountCredentials credentials) {
 
-        System.out.println("Attempting to get jwt token");
+       // System.out.println("Attempting to get jwt token");
 
-        UsernamePasswordAuthenticationToken creds = new
-                UsernamePasswordAuthenticationToken(
-                credentials.username(),
-                credentials.password());
+//        UsernamePasswordAuthenticationToken creds = new
+//                UsernamePasswordAuthenticationToken(
+//                credentials.username(),
+//                credentials.password());
 
         //Authentication auth = authMan.authenticate(creds);
 

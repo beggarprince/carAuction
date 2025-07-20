@@ -82,12 +82,12 @@
             year: document.getElementById("year").value,
             price: document.getElementById("price").value,
             <!--The user needs to be passed, it's not an element in the html -->
-            user: localStorage.getItem("username"),
+            id: localStorage.getItem("id")
         }
 
         try{
             const res = await
-                fetch('http:/localhost:8808/uploadCar',{
+                fetch('/uploadCar',{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify(body)
@@ -118,9 +118,9 @@
 
         try{
 
-            const username = localStorage.getItem("username")
+            const id = localStorage.getItem("id")
             document.getElementById("welcome").textContent =
-                `Welcome to the Circus of Value, ${username}`;
+                `Welcome to the Circus of Value, ${id}`;
         } catch(err){
             console.error(err);
         }

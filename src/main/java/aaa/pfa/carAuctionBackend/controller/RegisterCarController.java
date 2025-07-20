@@ -21,10 +21,11 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class RegisterCarController {
 
-    private CarService carService;
+    private final CarService carService;
 
     public RegisterCarController(
-            ) {
+            CarService carService) {
+        this.carService = carService;
     }
 
     @GetMapping("/uploadCar")
@@ -38,6 +39,7 @@ public class RegisterCarController {
     public ResponseEntity<CarUploadResponseDTO> uploadCar(
             @Valid
             @RequestBody CarUploadDTO dto
+
     ){
 
         Car newCar = carService.registerCar(dto);

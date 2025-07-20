@@ -2,6 +2,7 @@ package aaa.pfa.carAuctionBackend.controller;
 
 
 import aaa.pfa.carAuctionBackend.model.User;
+import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import aaa.pfa.carAuctionBackend.services.UserDTO;
 import aaa.pfa.carAuctionBackend.services.UserDetailsServiceService;
 import aaa.pfa.carAuctionBackend.services.UserService;
@@ -20,6 +21,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserDetailsServiceService userDetailsServiceService;
+    @Autowired
+    private UserRepository userRepository;
 
     public UserController(){};
 
@@ -52,9 +55,13 @@ public class UserController {
         User user= userDetailsServiceService.returnByUsername(username);
 
         System.out.println(user.name);
+
         return ResponseEntity.ok(
-                new UserDTO(user.username, user.name, user.lastName)
+                new UserDTO(user.username, user.name, user.lastName, user.id)
+
         );
     }
+
+
 
 }
