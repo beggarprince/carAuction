@@ -10,16 +10,17 @@ import java.util.Date;
 public class Car {
 
     @Column(nullable = false)
+    //TODO i might handle make with enums
     private String make, model;
 
     @Column(nullable = false)
-    private int year, price;
+    private int year;
+    private double price;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -30,7 +31,7 @@ public class Car {
 
     public Car(){};
 
-    public Car(String make, String model, int price, int year, User user){
+    public Car(String make, String model, double price, int year, User user){
         this.make = make;
         this.model = model;
         this.price = price;
@@ -56,7 +57,7 @@ public class Car {
         return year;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 

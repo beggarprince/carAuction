@@ -24,6 +24,7 @@ public class CarAuctionBackendApplication
 	private final CarRepository carRepository;
 	private final ProductPictureRepository pictureRepository;
 
+
 	public CarAuctionBackendApplication(UserRepository urp,
 										CarRepository carRepository,
 										ProductPictureRepository pictureRepository){

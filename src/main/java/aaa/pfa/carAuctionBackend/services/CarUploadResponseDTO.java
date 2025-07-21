@@ -8,7 +8,7 @@ public record CarUploadResponseDTO(
         String make,
         String model,
         int year,
-        int price,
+        double price,
         Date datePosted
 ) {
 }
