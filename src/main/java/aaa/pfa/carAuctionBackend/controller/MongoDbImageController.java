@@ -1,7 +1,7 @@
 package aaa.pfa.carAuctionBackend.controller;
 
 
-import aaa.pfa.carAuctionBackend.model.ProductImageDTO;
+import aaa.pfa.carAuctionBackend.DTO.ProductImageDTO;
 import aaa.pfa.carAuctionBackend.model.ProductPicture;
 import aaa.pfa.carAuctionBackend.repository.ProductPictureRepository;
 import org.bson.types.Binary;
@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.awt.*;
 import java.io.IOException;
 
 @RestController

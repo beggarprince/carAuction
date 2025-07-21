@@ -1,12 +1,12 @@
 package aaa.pfa.carAuctionBackend.services;
 
 
+import aaa.pfa.carAuctionBackend.DTO.CarUploadDTO;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.CarRepository;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

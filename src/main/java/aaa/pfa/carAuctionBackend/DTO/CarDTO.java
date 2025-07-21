@@ -1,4 +1,4 @@
-package aaa.pfa.carAuctionBackend.services;
+package aaa.pfa.carAuctionBackend.DTO;
 
 public record CarDTO(
          Long id,

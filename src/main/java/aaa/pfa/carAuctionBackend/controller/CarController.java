@@ -2,10 +2,10 @@ package aaa.pfa.carAuctionBackend.controller;
 
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.repository.CarRepository;
-import aaa.pfa.carAuctionBackend.services.CarDTO;
+import aaa.pfa.carAuctionBackend.DTO.CarDTO;
 import aaa.pfa.carAuctionBackend.services.CarService;
-import aaa.pfa.carAuctionBackend.services.CarUploadDTO;
-import aaa.pfa.carAuctionBackend.services.CarUploadResponseDTO;
+import aaa.pfa.carAuctionBackend.DTO.CarUploadDTO;
+import aaa.pfa.carAuctionBackend.DTO.CarUploadResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,4 @@
-package aaa.pfa.carAuctionBackend.services;
-
-import java.util.UUID;
+package aaa.pfa.carAuctionBackend.DTO;
 
 public class UserDTO {
     private final String username;

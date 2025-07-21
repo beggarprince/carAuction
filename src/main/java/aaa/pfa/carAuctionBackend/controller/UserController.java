@@ -3,14 +3,13 @@ package aaa.pfa.carAuctionBackend.controller;
 
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
-import aaa.pfa.carAuctionBackend.services.UserDTO;
+import aaa.pfa.carAuctionBackend.DTO.UserDTO;
 import aaa.pfa.carAuctionBackend.services.UserDetailsServiceService;
 import aaa.pfa.carAuctionBackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

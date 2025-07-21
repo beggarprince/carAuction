@@ -1,9 +1,6 @@
-package aaa.pfa.carAuctionBackend.services;
+package aaa.pfa.carAuctionBackend.DTO;
 
-import aaa.pfa.carAuctionBackend.model.User;
 import jakarta.validation.constraints.NotBlank;
-
-import java.util.Date;
 
 public record CarUploadDTO(
         @NotBlank String make,

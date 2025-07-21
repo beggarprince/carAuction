@@ -1,13 +1,13 @@
 package aaa.pfa.carAuctionBackend.services;
 
 
+import aaa.pfa.carAuctionBackend.DTO.UserDTO;
+import aaa.pfa.carAuctionBackend.DTO.UserRegisterDTO;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -2,14 +2,13 @@ package aaa.pfa.carAuctionBackend.controller;
 
 
 import aaa.pfa.carAuctionBackend.model.User;
-import aaa.pfa.carAuctionBackend.services.UserRegisterDTO;
-import aaa.pfa.carAuctionBackend.services.UserResponseDTO;
+import aaa.pfa.carAuctionBackend.DTO.UserRegisterDTO;
+import aaa.pfa.carAuctionBackend.DTO.UserResponseDTO;
 import aaa.pfa.carAuctionBackend.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
