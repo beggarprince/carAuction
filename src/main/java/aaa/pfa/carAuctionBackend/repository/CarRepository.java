@@ -14,11 +14,9 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     @Query
     List<Car> findTop5ByOrderByDatePostedDesc();
 
-//    List<Car> findAllByPriceIsLessThan(Double price);
-//
-//    List<Car> findAllByMileageGreaterThan(Double mileage);
-//
-//    List<Car> findAllByMileageLesserThan(Double mileage);
+    List<Car> findAllByPriceIsLessThan(Double price);
+
+    List<Car> findAllByMileageGreaterThan(int mileage);
 
 
 }

@@ -1,5 +1,6 @@
 package aaa.pfa.carAuctionBackend.controller;
 
+import aaa.pfa.carAuctionBackend.DTO.CarPictureDTO;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.repository.CarRepository;
 import aaa.pfa.carAuctionBackend.DTO.CarDTO;
@@ -58,6 +59,24 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
+    @PostMapping("/cars/uploadPhotos")
+    public ResponseEntity<Void> uploadCarPics(
+            @Valid
+            @RequestBody CarPictureDTO dto
+            ){
+
+        System.out.println("At /cars/uploadPhotos");
+        Car car = carRepository.findById(dto.carId()).orElse(null);
+        if(car != null) {
+            car.setPictureURL(dto.ids());
+            carRepository.save(car);
+        }else{
+            System.out.println("Error updating car with pictures");
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/cars/getList")
     public ResponseEntity<List<CarDTO>> getCars(
             @RequestParam String filter
@@ -83,6 +102,7 @@ public class CarController {
                     car.getMake(),
                     car.getModel(),
                     car.getYear(),
+                    car.getMileage(),
                     car.getPrice(),
                     car.getDatePosted().toString(),
                     car.getUser().username

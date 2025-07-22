@@ -5,6 +5,7 @@ public record CarDTO(
          String make,
          String model,
          int year,
+         int mileage,
          double price,
          String datePosted,
          String owner

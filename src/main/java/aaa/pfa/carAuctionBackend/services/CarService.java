@@ -34,8 +34,9 @@ public class CarService {
             Car car = new Car(
                     dto.make(),
                     dto.model(),
-                    dto.price(),
                     dto.year(),
+                    dto.mileage(),
+                    dto.price(),
                     user.orElse(null)
                     );
 

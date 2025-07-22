@@ -8,9 +8,6 @@
 <h1>Please enter your car details</h1>
 <form id ="carForm" action="register" method="post">
 
-    <label for="mileage">Mileage</label>
-    <input type="number" id="mileage" name="mileage"><br>
-
     <label for="make">Make</label>
     <select id="make" name="make" required>
         <option value="" disabled selected>Select a Car Make</option>
@@ -57,11 +54,19 @@
     <label for="price">Price</label>
     <input type="number" id="price" name="price"><br>
 
+    <label for="mileage">Mileage</label>
+    <input type="number" id="mileage" name="mileage"><br>
+
+
     <label for="year">Year</label>
     <input type="number" id="year" name="year"><br>
 
     <button type="submit">Register</button>
 </form>
+
+<input type="file" id="eImageInput" accept="image/*" multiple>
+<input type="text" id="pictureOwner"  placeholder="TEMP: Enter name">
+<button id="uploadBtn">Upload</button>
 
 <div id="response">
     Enter car information
@@ -71,8 +76,18 @@
 </div>
 
 <script>
+    //Car upload
     const response = document.getElementById('response');
     const form = document.getElementById('carForm');
+
+    //Picture upload
+    const pictures  = document.getElementById('eImageInput');
+    const ownerName = document.getElementById('pictureOwner')
+
+    //Id of uploaded pictures to be sent with car
+    let pictureId = [];
+    let carId;
+
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -82,21 +97,24 @@
             model: document.getElementById("model").value,
             year: document.getElementById("year").value,
             price: document.getElementById("price").value,
+            mileage: document.getElementById("mileage").value,
             <!--The user needs to be passed, it's not an element in the html -->
             id: localStorage.getItem("id")
         }
 
+        //Submit car
         try{
             const res = await
                 fetch('/uploadCar',{
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json'},
-                body: JSON.stringify(body)
-            });
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify(body)
+                });
 
             if(res.ok){
                 const data = await res.json();
-                response.textContent = `Successfully uploaded car (id ${data.id})`;
+                carId = data.id;
+                response.textContent = `Successfully uploaded car (id ${carId})`;
                 response.style.color = 'green';
             }
             else{
@@ -105,11 +123,70 @@
                 response.style.color = 'red';
             }
 
-
         }catch(err){
             response.textContent = 'Error submitting car' + err.message;
             response.style.color = 'red';
         }
+
+
+        const pictureFiles = pictures.files;
+        //Upload pictures
+        if(pictureFiles > 6 || pictureFiles === 0){
+            alert("You can only upload 6 images and/or no images set")
+            return;
+        }
+        const pictureMongoFormData = new FormData();
+        for( const file of pictureFiles){
+            pictureMongoFormData.append('file', file);
+        }
+        //TODO I need to change this later to use the jwt or local storage value instead of an input
+        pictureMongoFormData.append('owner', ownerName.value)
+
+
+        //Atp we have the mongo form data ready to send
+        try{
+            const mongoResponse = await fetch('/api/images/multiple',{
+                method: 'POST',
+                body: pictureMongoFormData
+            });
+            if(!mongoResponse.ok){
+                throw new Error(await mongoResponse.text())
+            }
+            const mongoIdData = await mongoResponse.json();
+
+            pictureId = mongoIdData.ids;
+
+            //now, given the car has been created, we will add pics. This is only because i don't want to rewrite the dto
+
+            try{
+                const pictureUpdateBody = {
+                    carId: carId,
+                    ids: pictureId
+                }
+
+                const updateWithPicsResponse = await fetch(
+                    '/cars/uploadPhotos', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(pictureUpdateBody)
+                    }
+                );
+
+                if(!updateWithPicsResponse.ok){
+                    throw new Error(await updateWithPicsResponse.text())
+                }
+
+            }
+            catch(err){
+                console.error("Could not update car with pictures")
+            }
+
+        }catch(err){
+            console.error('Upload failed:', err);
+            alert(err.message);
+        }
+
+
     })
 
 </script>
@@ -127,6 +204,10 @@
         }
     })();
 </script>
+
+
+
+
 
 </body>
 </html>
