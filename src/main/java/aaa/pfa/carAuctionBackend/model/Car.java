@@ -104,7 +104,7 @@ public class Car {
         return mileage;
     }
 
-    public List<String> getPictureURL() {
+    public List<String> getPicturesURL() {
         return pictureURL;
     }
 

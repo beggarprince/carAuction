@@ -33,6 +33,7 @@
 <div id="tempMessage">This is also temporarily working as the dashboard type ls</div>
 
 <script>
+    //Fetch dynamic data passed to controller
     fetch('/home-data')
         .then(response => response.json())
         .then(data => {
@@ -52,8 +53,16 @@
     Fetch Cars
 </button>
 
+<br>
+<button id="fetchUsers">
+    Fetch users
+</button>
+
+
 <script>
+    //Welcome user if logged in, store their username
     ( async  () => {
+
         const token = localStorage.getItem("jwt")
 
         if(!token) return;
@@ -91,22 +100,46 @@
 </script>
 
 <script>
+    //Return a list of cars
     const btnFetch = document.getElementById('fetchCars');
+
     btnFetch.addEventListener('click', async (e) => {
 
+        //TODO add more methods for different queries
         try {
             const fetchCarResponse = await fetch('/cars/getList?filter=top5desc',
                 {method:'POST'});
 
-            console.log(fetchCarResponse.json());
+            const carJsonResponse = await fetchCarResponse.json();
+
+            console.log(JSON.stringify(carJsonResponse, null,2));
 
         }catch(e){
-            console.log("Could not fetch cars type")
+            console.log("Could not fetch cars")
         }
 
     })
 </script>
 
+<script>
+    const btnFetchUsers = document.getElementById('fetchUsers')
+
+    btnFetchUsers.addEventListener('click', async (e) =>
+    {
+        try{
+            const fetchUsersResponse = await fetch('api/users/getAllUsers',
+                {method: 'GET'});
+
+                const userResponse = await fetchUsersResponse.json();
+
+            console.log(JSON.stringify(userResponse, null,2));
+
+        }catch(error){
+            console.log("Could not fetch users")
+        }
+    })
+
+</script>
 
 <p> Copyright type shit</p>
 </body>

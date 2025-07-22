@@ -3,6 +3,7 @@ package aaa.pfa.carAuctionBackend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,4 +42,11 @@ public class User {
     public List<Car> cars;
 
 
+    public List<Long> carIds() {
+        List<Long> ids = new ArrayList<>();
+        for(Car c : cars){
+            ids.add(c.getId());
+        }
+        return ids;
+    }
 }

@@ -82,6 +82,7 @@ public class CarController {
             @RequestParam String filter
     ){
         List<Car> carList = new ArrayList<>();
+
         switch(filter){
             case "top5desc":
                 carList = carRepository.findTop5ByOrderByDatePostedDesc();
@@ -105,7 +106,9 @@ public class CarController {
                     car.getMileage(),
                     car.getPrice(),
                     car.getDatePosted().toString(),
-                    car.getUser().username
+                    car.getUser().username,
+                    car.getUser().id,
+                    car.getPicturesURL()
             );
             carDTOList.add(carDTO);
         }
