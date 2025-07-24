@@ -46,7 +46,9 @@ public class CarController {
             @RequestBody CarUploadDTO dto
 
     ){
+
         Car newCar = carService.registerCar(dto);
+
         CarUploadResponseDTO body = new CarUploadResponseDTO(
                 newCar.getId(),
                 newCar.getUser().username,

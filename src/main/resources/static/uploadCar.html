@@ -91,6 +91,11 @@
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const id = localStorage.getItem("id")
+        if(id===null){
+            console.log("Id is null please sign in")
+            return
+        }
 
         const body = {
             make: document.getElementById("make").value,
@@ -99,10 +104,12 @@
             price: document.getElementById("price").value,
             mileage: document.getElementById("mileage").value,
             <!--The user needs to be passed, it's not an element in the html -->
-            id: localStorage.getItem("id")
+            id: localStorage.getItem("id"),
+            ownerUsername:  localStorage.getItem("username")
         }
 
         //Submit car
+        console.log("Attempting to upload a car");
         try{
             const res = await
                 fetch('/uploadCar',{
@@ -128,7 +135,7 @@
             response.style.color = 'red';
         }
 
-
+        console.log("Attempting to upload picture");
         const pictureFiles = pictures.files;
         //Upload pictures
         if(pictureFiles > 6 || pictureFiles === 0){
@@ -143,6 +150,7 @@
         pictureMongoFormData.append('owner', ownerName.value)
 
 
+        console.log("Attempting to link picture to car");
         //Atp we have the mongo form data ready to send
         try{
             const mongoResponse = await fetch('/api/images/multiple',{

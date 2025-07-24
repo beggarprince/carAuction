@@ -27,7 +27,7 @@ public class Car {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private User user; //owner
+    private User user; //ownerUsername
 
     @Column
     private Date datePosted;

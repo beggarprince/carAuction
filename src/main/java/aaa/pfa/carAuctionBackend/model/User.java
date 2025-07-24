@@ -37,9 +37,12 @@ public class User {
         this.role = role;
         this.name = name;
         this.lastName =lastName;
+        this.cars = new ArrayList<Car>();
     }
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    public List<Car> cars;
+
+    @Column
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+    private List<Car> cars;
 
 
     public List<Long> carIds() {
@@ -48,5 +51,9 @@ public class User {
             ids.add(c.getId());
         }
         return ids;
+    }
+
+    public void addCarToUser(Car car) {
+        cars.add(car);
     }
 }

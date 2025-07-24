@@ -10,7 +10,7 @@ public record CarDTO(
          int mileage,
          double price,
          String datePosted,
-         String owner,
+         String ownerUsername,
          Long user_id,
          List<String> picUrl
 ) {

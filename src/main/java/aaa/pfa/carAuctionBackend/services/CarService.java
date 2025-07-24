@@ -6,7 +6,9 @@ import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.CarRepository;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,20 +27,24 @@ public class CarService {
     }
 
     @Transactional
-    public Car registerCar(
-            CarUploadDTO dto
-    ){
+    public Car registerCar(@Valid CarUploadDTO dto) {
+        Optional<User> optionalUser = userRepository.findById(dto.id());
 
-        Optional<User> user = userRepository.findById(dto.id());
+        User user = optionalUser.orElseThrow(() ->
+                new EntityNotFoundException("User not found with ID: " + dto.id()));
 
-            Car car = new Car(
-                    dto.make(),
-                    dto.model(),
-                    dto.year(),
-                    dto.mileage(),
-                    dto.price(),
-                    user.orElse(null)
-                    );
+        System.out.println("User id is:" + user.id);
+
+        Car car = new Car(
+                dto.make(),
+                dto.model(),
+                dto.year(),
+                dto.mileage(),
+                dto.price(),
+                user
+        );
+
+        user.addCarToUser(car);
 
         return carRepository.save(car);
     }
