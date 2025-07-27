@@ -4,62 +4,141 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
 </head>
 
 <body>
 <h1>Home Page</h1>
 
-<div class="headerBar">
-    <button>button</button>
-    <button>button2</button>
-    <div style="width: 200px">
-        <img src="/images/noImg.png" alt="Logo">
+<!--Banner -->
+
+<div class="banner">
+    <div class="site-title">CIRCUS OF VALUE - Car Marketplace</div>
+    <div class="nav-links">
+        <button>Dashboard</button>
+        <a id="tempReg" href="/register.html">Create Account</a>
+        <a id="tempLogin" href="/login.html">Login</a>
+        <a id="tempRegCar" href="/uploadCar.html">Post A Car Listing</a>
+        <a href="#">Help</a>
+        <a href="#">Contact</a>
+        <a href="#">About</a>
     </div>
-    <a id="tempReg" href="/register.html">Register button</a>
-    <a id="tempLogin" href="/login.html">Login</a>
-    <a id="tempRegCar" href="/uploadCar.html">Upload Car Listing</a>
 </div>
 
-<div id="text"></div>
-<img id="image" alt="Dynamic Image" style="margin: 25px;"/><br>
-
-<div id="tempMessage">This is also temporarily working as the dashboard type ls</div>
-<div id="welcome">WELCOME TO THE CIRCUS OF VALUE</div>
-
-<select id="fetchType">
-    <option value ="top5desc">Get most recent</option>
-</select>
-
-<button id="fetchCars">Fetch Cars</button><br>
-<button id="fetchUsers">Fetch users</button><br>
-<button id="debugShowCar">Show Cars</button><br>
-<button id="fetchAllData">Fetch All Data</button><br>
-<button id="carCardTemplateTest">Show cars as cards</button>
-
-<div id="cardContainer"></div>
-<div id="dataOutput"></div>
-
-<!-- Base car card template -->
-<template id="carCardTemplate">
-    <div class="card">
-        <h3 id="cardTitle"></h3>
-        <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car">
-        <div class="lTextBg">
-            <p class="lPrice" id="price">$2000</p>
-            <div class="cellDescription" id="description">Description</div>
+<!-- Search -->
+<div class="search-section">
+    <div class="search-content">
+        <div class="search-bar">
+            <input type="text" placeholder="Search cars, make, model..." id="searchInput">
+            <select id="fetchType">
+                <!-- I need to change this to a filter-->
+                <option value="top5desc">Most Recent</option>
+            </select>
+            <button id="serachButton">Search</button>
         </div>
+    </div>
+</div>
+
+<!-- Main -->
+<div class="main-container">
+    <!--Sidebar -->
+    <div class="sidebar">
+        <!--Sidebar actions -->
+        <h3>Quick Actions</h3>
+        <div class="filter-controls">
+            <button id="fetchCars">Load Cars</button>
+            <button id="fetchUsers">Load Users</button>
+            <button id="debugShowCar">Show Car Data</button>
+            <button id="fetchAllData">Load All Data</button>
+            <button id="carCardTemplateTest">Show as Grid</button>
+        </div>
+
+        <!--Categories -->
+        <div class="sidebar-section">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="#">All cars</a></li>
+                <li><a href="#">Sedans</a></li>
+                <li><a href="#">SUVs</a></li>
+                <li><a href="#">Trucks</a></li>
+                <li><a href="#">Coupes</a></li>
+                <li><a href="#">Convertibles</a></li>
+                <li><a href="#">Motorcycles</a></li>
+            </ul>
+        </div>
+
+    <!--Price filtering -->
+    <div class="sidebar-section">
+        <h3>Quote of the Day</h3>
+        <div class="quote-of-the-day">
+            "I really need to get a resource with safe, pg quotes" - bp
+        </div>
+    </div>
+
+    <!--Useful Links -->
+    <div class="sidebar-section">
+        <h3>Useful Links</h3>
+        <ul>
+            <li><a href="#">Financing Calculator</a></li>
+            <li><a href="#">Insurance Quotes</a></li>
+            <li><a href="#">Car History Reports</a></li>
+            <li><a href="#">Maintenance Tips</a></li>
+            <li><a href="#">Selling Guide</a></li>
+        </ul>
+    </div>
+    </div>
+
+</div>
+
+<!--Main content -->
+<div class="main-content">
+
+    <!-- Welcome message (dynamic)-->
+    <div class ="welcome-message">
+        <div id="welcome">WELCOME TO THE CIRCUS OF VALUE</div>
+        <div id="tempMessage">Temp message</div>
+    </div>
+
+    <!--Dynamic image test -->
+    <div class="dynamic-image">
+        <img id="image" alt="Dynamic Image" style="display: none">
+    </div>
+
+    <div class="content-header">
+        <h2>Available Listings</h2>
+        <div class="results-info">Click "Show As Grid" to display car listings</div>
+    </div>
+
+    <!--Car listings -->
+    <div id="cardContainer">
+        <div class="items-grid" id="itemsGrid">
+
+        </div>
+    </div>
+
+    <div id="dataOutput"></div>
+</div>
+
+<template id="carCardTemplate">
+    <div class="item-card">
+        <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car">
+        <h4 id="cardTitle"></h4>
+        <div class="price" id="price">$2000</div>
+        <div class="description" id="description">Description</div>
+        <div class="meta">Posted recently</div>
     </div>
 </template>
 
-<!-- Data display template -->
 <template id="carStringTest">
-    <div id="carDetails">
+    <div class="data-display">
         <h3>Fetched Data:</h3>
         <pre id="dataDisplay"></pre>
     </div>
 </template>
 
-<p>Copyright type shit</p>
+<footer>
+    <p>Copyright © 2025 Circus of Value Car Marketplace. All rights reserved.</p>
+</footer>
 
 <script src="js/appData.js"></script>
 <script src="js/dataFetcher.js"></script>
