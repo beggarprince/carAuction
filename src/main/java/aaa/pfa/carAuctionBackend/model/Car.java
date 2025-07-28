@@ -11,8 +11,9 @@ import java.util.List;
 @Table(name="cars")
 public class Car {
 
+    //TODO does not handle location, city, zip, distance yet.
+
     @Column(nullable = false)
-    //TODO i might handle make with enums
     private String make, model;
 
     @Column(nullable = false)
@@ -35,26 +36,115 @@ public class Car {
 
     @Convert(converter = StringListConverter.class)
     @Column(columnDefinition = "JSON")
-    private List<String> pictureURL = new ArrayList<>();
+    private final List<String> pictureURL = new ArrayList<>();
+
+    //This is going to be a ton of information that is optional
+    @Column
+    private String transmission, drive, fuel, type, title, cylinder, color, condition, description;
 
     public Car(){};
 
-    public Car(String make,
-               String model,
-               int year,
-               int mileage,
-               double price,
-               User user){
-        this.make = make;
-        this.model = model;
-        this.price = price;
-        this.year = year;
+    public Car(Builder builder){
+        this.make = builder.make;
+        this.model = builder.model;
+        this.year = builder.year;
+        this.mileage = builder.mileage;
+        this.price = builder.price;
+        this.user = builder.user;
+
+        this.transmission = builder.transmission;
+        this.drive = builder.drive;
+        this.fuel = builder.fuel;
+        this.type = builder.type;
+        this.title = builder.title;
+        this.cylinder = builder.cylinder;
+        this.color = builder.color;
+        this.condition = builder.condition;
         this.datePosted = new Date();
-        this.mileage = mileage;
-        this.user = user;
+        this.description = builder.description;
         printDetails();
     }
 
+
+    public static class Builder{
+        // Required fields
+        private final String make;
+        private final String model;
+        private final int year;
+        private final int mileage;
+        private final double price;
+        private final User user;
+
+        // Optional fields
+        private String transmission;
+        private String drive;
+        private String fuel;
+        private String type;
+        private String title;
+        private String cylinder;
+        private String color;
+        private String condition;
+        private String description;
+
+        public Builder(String make, String model, int year, int mileage, double price, User user) {
+            this.make = make;
+            this.model = model;
+            this.year = year;
+            this.mileage = mileage;
+            this.price = price;
+            this.user = user;
+        }
+
+
+        public Builder transmission(String transmission){
+            this.transmission = transmission;
+            return this;
+        }
+
+        public Builder drive(String drive) {
+            this.drive = drive;
+            return this;
+        }
+
+        public Builder fuel(String fuel) {
+            this.fuel = fuel;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder cylinder(String cylinder) {
+            this.cylinder = cylinder;
+            return this;
+        }
+
+        public Builder color(String color) {
+            this.color = color;
+            return this;
+        }
+
+        public Builder condition(String condition) {
+            this.condition = condition;
+            return this;
+        }
+
+        public Builder description(String description){
+            this.description = description;
+            return this;
+        }
+
+        public Car build() {
+            return new Car(this);
+        }
+    }
 
 
     public void setUser(User user){
@@ -98,6 +188,32 @@ public class Car {
         System.out.println("Price: " + price);
         System.out.println("Date Posted: " + datePosted);
         System.out.println("User: " + (user != null ? user : "None"));
+
+        if (drive != null) {
+            System.out.println("Drive: " + drive);
+        }
+        if (fuel != null) {
+            System.out.println("Fuel: " + fuel);
+        }
+        if (type != null) {
+            System.out.println("Type: " + type);
+        }
+        if (title != null) {
+            System.out.println("Title: " + title);
+        }
+        if (cylinder != null) {
+            System.out.println("Cylinder: " + cylinder);
+        }
+        if (color != null) {
+            System.out.println("Color: " + color);
+        }
+        if (condition != null) {
+            System.out.println("Condition: " + condition);
+        }
+        if(description != null){
+            System.out.println("Description: " + description);
+        }
+        System.out.println("--------------------");
     }
 
     public int getMileage() {

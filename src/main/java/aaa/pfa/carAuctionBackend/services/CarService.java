@@ -20,7 +20,7 @@ public class CarService {
     UserRepository userRepository;
 
     public CarService(CarRepository carRepository,
-                      UserRepository userRepository){
+                      UserRepository userRepository) {
         super();
         this.carRepository = carRepository;
         this.userRepository = userRepository;
@@ -35,14 +35,23 @@ public class CarService {
 
         System.out.println("User id is:" + user.id);
 
-        Car car = new Car(
+        Car car = new Car.Builder(
                 dto.make(),
                 dto.model(),
                 dto.year(),
                 dto.mileage(),
                 dto.price(),
-                user
-        );
+                user).transmission(dto.transmission())
+                .drive(dto.drive())
+                .fuel(dto.fuel())
+                .type(dto.type())
+                .title(dto.title())
+                .cylinder(dto.cylinder())
+                .color(dto.color())
+                .condition(dto.condition())
+                .description(dto.description())
+                .build();
+
 
         user.addCarToUser(car);
 
