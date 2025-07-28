@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
@@ -123,7 +123,7 @@
                 <li><a href="#">Sedans</a></li>
                 <li><a href="#">SUVs</a></li>
                 <li><a href="#">Trucks</a></li>
-                <li><a href="#">Motorcycles</a></li>
+                <li><a href="#">Motorcycles </a></li>
                 <li><a href="#">Other</a></li>
             </ul>
         </div>
@@ -158,7 +158,7 @@
     <!-- Welcome message (dynamic)-->
     <div class ="welcome-message">
         <div id="welcome">WELCOME TO THE CIRCUS OF VALUE</div>
-        <div id="tempMessage">Temp message</div>
+        <div id="tempMessage">This message should not be read and indicates that we did not load the dynamic message</div>
     </div>
 
     <!--Dynamic image test -->
@@ -170,14 +170,7 @@
         <div class="results-info">Click "Show As Grid" to display car listings</div>
     </div>
 
-    <!--Car listings -->
-    <div id="cardContainer">
-        <div class="items-grid" id="itemsGrid">
 
-        </div>
-    </div>
-
-    <div id="dataOutput"></div>
 </div>
 
 <template id="carCardTemplate">
@@ -202,6 +195,7 @@
 </footer>
 
 <script src="js/appData.js"></script>
+<script src="js/homeFetchDynamicData.js"></script>
 <script src="js/dataFetcher.js"></script>
 <script src="js/homeEventListener.js"></script>
 

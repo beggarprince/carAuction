@@ -1,5 +1,4 @@
 (async () =>{
-    await dataFetcher.fetchHomeData();
     await dataFetcher.fetchCurrentUser();
 })();
 
