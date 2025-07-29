@@ -42,9 +42,9 @@ public class Car {
     @Column
     private String transmission, drive, fuel, type, title, cylinder, color, condition, description;
 
-    public Car(){};
+    protected Car(){};
 
-    public Car(Builder builder){
+    private Car(Builder builder){
         this.make = builder.make;
         this.model = builder.model;
         this.year = builder.year;
@@ -189,6 +189,9 @@ public class Car {
         System.out.println("Date Posted: " + datePosted);
         System.out.println("User: " + (user != null ? user : "None"));
 
+        if(transmission != null){
+            System.out.println("Transmission: " + transmission);
+        }
         if (drive != null) {
             System.out.println("Drive: " + drive);
         }

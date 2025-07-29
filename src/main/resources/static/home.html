@@ -2,26 +2,27 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>Home Page</title>
+    <title>Home Page - Car Marketplace</title>
     <link rel="stylesheet" type="text/css" href="/css/home.css">
+
 </head>
 
 <body>
 <h1>Home Page</h1>
 
 <!--Banner -->
-
 <div class="banner">
-    <div class="site-title">CIRCUS OF VALUE - Car Marketplace</div>
-    <div class="nav-links">
-        <button>Dashboard</button>
-        <a id="tempReg" href="/register.html">Create Account</a>
-        <a id="tempLogin" href="/login.html">Login</a>
-        <a id="tempRegCar" href="/uploadCar.html">Post A Car Listing</a>
-        <a href="#">Help</a>
-        <a href="#">Contact</a>
-        <a href="#">About</a>
+    <div class="banner-content">
+        <div class="site-title">CIRCUS OF VALUE - Car Marketplace</div>
+        <div class="nav-links">
+            <button>Dashboard</button>
+            <a id="tempReg" href="/register.html">Create Account</a>
+            <a id="tempLogin" href="/login.html">Login</a>
+            <a id="tempRegCar" href="/uploadCar.html">Post A Car Listing</a>
+            <a href="#">Help</a>
+            <a href="#">Contact</a>
+            <a href="#">About</a>
+        </div>
     </div>
 </div>
 
@@ -31,7 +32,6 @@
         <div class="search-bar">
             <input type="text" placeholder="Search cars, make, model..." id="searchInput">
             <select id="fetchType">
-                <!-- I need to change this to a filter-->
                 <option value="top5desc">Most Recent</option>
             </select>
             <button id="serachButton">Search</button>
@@ -39,18 +39,20 @@
     </div>
 </div>
 
-<!-- Main -->
+<!-- Main Container with Flexbox Layout -->
 <div class="main-container">
     <!--Sidebar -->
     <div class="sidebar">
         <!--Sidebar actions -->
-        <h3>Quick Actions</h3>
-        <div class="filter-controls">
-            <button id="fetchCars">Load Cars</button>
-            <button id="fetchUsers">Load Users</button>
-            <button id="debugShowCar">Show Car Data</button>
-            <button id="fetchAllData">Load All Data</button>
-            <button id="carCardTemplateTest">Show as Grid</button>
+        <div class="sidebar-section">
+            <h3>Quick Actions</h3>
+            <div class="filter-controls">
+                <button id="fetchCars">Load Cars</button>
+                <button id="fetchUsers">Load Users</button>
+                <button id="debugShowCar">Show Car Data</button>
+                <button id="fetchAllData">Load All Data</button>
+                <button id="carCardTemplateTest">Show as Grid</button>
+            </div>
         </div>
 
         <!--Price filtering -->
@@ -58,16 +60,13 @@
             <h3>Price</h3>
             <label for="minPrice"></label>
             <input type="number" placeholder="min" id="minPrice">
-
-            <label for="maxPrice">
+            <label for="maxPrice"></label>
             <input type="number" placeholder="max" id="maxPrice">
-            </label>
         </div>
 
         <!-- make and model -->
         <div class="sidebar-section">
-            <p>Make and Model</p>
-            <!-- Redo this element -->
+            <h3>Make and Model</h3>
             <div class="form-group">
                 <label for="make">Make<span class="required"></span></label>
                 <select id="make" name="make" required>
@@ -108,9 +107,8 @@
                     </optgroup>
                 </select>
             </div>
-
-            <br>
-            <label for="model"></label><input type="text" id="model" placeholder="Model">
+            <label for="model"></label>
+            <input type="text" id="model" placeholder="Model">
         </div>
 
         <!--Categories -->
@@ -123,55 +121,68 @@
                 <li><a href="#">Sedans</a></li>
                 <li><a href="#">SUVs</a></li>
                 <li><a href="#">Trucks</a></li>
-                <li><a href="#">Motorcycles </a></li>
+                <li><a href="#">Motorcycles</a></li>
                 <li><a href="#">Other</a></li>
             </ul>
         </div>
 
-        <!-- span and checkboxes for the transmission, drive, title, cyl, color, fuel, and condition-->
+        <div class="sidebar-section">
+            <h3>Quote of the Day</h3>
+            <div class="quote-of-the-day" id="quote-of-the-day">
+                "I really need to get a resource with safe, pg quotes" - bp
+            </div>
+        </div>
 
-    <div class="sidebar-section">
-        <h3>Quote of the Day</h3>
-        <div class="quote-of-the-day">
-            "I really need to get a resource with safe, pg quotes" - bp
+        <!--Useful Links -->
+        <div class="sidebar-section">
+            <h3>Useful Links</h3>
+            <ul>
+                <li><a href="#">Financing Calculator</a></li>
+                <li><a href="#">Insurance Quotes</a></li>
+                <li><a href="#">Car History Reports</a></li>
+                <li><a href="#">Maintenance Tips</a></li>
+                <li><a href="#">Selling Guide</a></li>
+            </ul>
         </div>
     </div>
 
-    <!--Useful Links -->
-    <div class="sidebar-section">
-        <h3>Useful Links</h3>
-        <ul>
-            <li><a href="#">Financing Calculator</a></li>
-            <li><a href="#">Insurance Quotes</a></li>
-            <li><a href="#">Car History Reports</a></li>
-            <li><a href="#">Maintenance Tips</a></li>
-            <li><a href="#">Selling Guide</a></li>
-        </ul>
-    </div>
-    </div>
+    <!--Main content -->
+    <div class="main-content">
+        <!-- Welcome message (dynamic)-->
+        <p> This is the start of the main content</p>
+        <div class="welcome-message">
+            <div id="welcome">WELCOME TO THE CIRCUS OF VALUE</div>
+            <div id="tempMessage">This message should not be read and indicates that we did not load the dynamic message</div>
+        </div>
 
+        <!--Dynamic image test -->
+        <div class="dynamic-image">
+            <img id="image" alt="Dynamic Image"/>
+        </div>
+
+        <div class="content-header">
+            <h2>Available Listings</h2>
+            <div class="results-info">Click "Show As Grid" to display car listings</div>
+        </div>
+
+        <!--Car listings -->
+        <div id="cardContainer">
+            <div class="items-grid" id="itemsGrid">
+
+            </div>
+        </div>
+
+        <div id="dataOutput"></div>
+
+        <p>This is the main content end</p>
+    </div>
+    <div>
+
+    </div>
 </div>
 
-<!--Main content -->
-<div class="main-content">
-
-    <!-- Welcome message (dynamic)-->
-    <div class ="welcome-message">
-        <div id="welcome">WELCOME TO THE CIRCUS OF VALUE</div>
-        <div id="tempMessage">This message should not be read and indicates that we did not load the dynamic message</div>
-    </div>
-
-    <!--Dynamic image test -->
-    <div class="dynamic-image">
-        <img id="image" alt="Dynamic Image" style="margin: 25px;"/><br>    </div>
-
-    <div class="content-header">
-        <h2>Available Listings</h2>
-        <div class="results-info">Click "Show As Grid" to display car listings</div>
-    </div>
 
 
-</div>
 
 <template id="carCardTemplate">
     <div class="item-card">
@@ -194,10 +205,24 @@
     <p>Copyright © 2025 Circus of Value Car Marketplace. All rights reserved.</p>
 </footer>
 
+<script>
+
+    // Basic functionality for demonstration
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.filter-controls button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                console.log(`${this.textContent} button clicked`);
+            });
+        });
+    });
+</script>
+
 <script src="js/appData.js"></script>
 <script src="js/homeFetchDynamicData.js"></script>
 <script src="js/dataFetcher.js"></script>
 <script src="js/homeEventListener.js"></script>
+<script src="js/dailyQuoteZen.js"></script>
 
 </body>
 </html>
