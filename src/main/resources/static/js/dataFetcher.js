@@ -140,20 +140,21 @@ const dataFetcher = {
 
         },
     //This is where we build the cards
-        displayAllAsCards(){
+        async displayAllAsCards() {
 
             const template = document.getElementById('carCardTemplate')
             const dataOutput = document.getElementById('dataOutput')
 
-            if(!template || !dataOutput) return;
+            if (!template || !dataOutput) return;
 
             dataOutput.innerHTML = ""
 
-            appData.cars.forEach((car) => {
+            for (const car of appData.cars) {
 
 
                 const card = template.content.cloneNode(true)
 
+                console.log(car + "\n")
                 const cardTitle = card.getElementById('cardTitle')
                 const cardPrice = card.getElementById('price')
                 const cardImage = card.getElementById("cardImage")
@@ -161,8 +162,9 @@ const dataFetcher = {
                 const year = car.year || "Unknown"
                 const make = car.make || "Unknown"
                 const model = car.model || "Unknown"
-                const imageUrl = car.pictureUrl?.[0];
-                let l = car.pictureUrl[0];
+                const datePosted = car.datePosted;
+
+                const pictureURL = car.pictureURL
 
                 const title = `${year} ${make} ${model}`
                 const price = car.price || "Unknown"
@@ -174,23 +176,20 @@ const dataFetcher = {
                     cardPrice.textContent = price
                 }
 
-                let mongoResponse ;
+                if (pictureURL) {
+                    let mongoResponse;
+                    mongoResponse = await mongoDbFetchPicture(pictureURL); // URL or n/a
 
-                if (imageUrl !== null) {
-                    console.log("Attempting to fetch image")
-                    mongoResponse = mongoDbFetchPicture(); // URL or n/a
                     if (mongoResponse !== "n/a") {
                         cardImage.src = mongoResponse;
                         cardImage.style.display = 'inline'
                     }
+                } else {
+                    console.log("No image associated with car: " + title)
                 }
-                else{
-                    console.log("No image associated with ar")
-                }
-
 
                 dataOutput.appendChild(card)
-            })
+            }
 
         }
 
