@@ -44,11 +44,11 @@ public class CarService {
                 user).transmission(dto.transmission())
                 .drive(dto.drive())
                 .fuel(dto.fuel())
-                .type(dto.type())
+                .carType(dto.carType())
                 .title(dto.title())
                 .cylinder(dto.cylinder())
                 .color(dto.color())
-                .condition(dto.condition())
+                .carCondition(dto.carCondition())
                 .description(dto.description())
                 .build();
 

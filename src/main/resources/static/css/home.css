@@ -115,12 +115,13 @@ h1 {
     display: flex;
     gap: 20px;
     padding: 20px;
+    flex-shrink: 2;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
-    flex-shrink: 0;
+    width: 225px;
+    flex-shrink: 1;
 }
 
 .sidebar-section {
@@ -339,7 +340,7 @@ footer {
 
 @media (max-width: 768px) {
     .main-container {
-        flex-direction: column;
+        flex-direction: row;
         padding: 10px;
     }
 

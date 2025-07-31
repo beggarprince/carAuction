@@ -488,12 +488,13 @@
 
     //Id of uploaded pictures to be sent with car
     let pictureId = [];
-    let carId;
+    let carId = [];
 
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const id = localStorage.getItem("id")
+
         if(id===null){
             console.log("Id is null please sign in")
             response.textContent = "Please sign in first";
@@ -511,15 +512,15 @@
             <!--The user needs to be passed, it's not an element in the html -->
             id: localStorage.getItem("id"),
             //Optional fields
-            ownerUsername:  localStorage.getItem("username"),
+            //ownerUsername:  localStorage.getItem("username"),
             transmission: document.getElementById("transmission").value,
             drive: document.getElementById("drive").value,
             fuel: document.getElementById("fuel").value,
-            vehicleType: document.getElementById("vehicleType").value,
+            carType: document.getElementById("vehicleType").value,
             title: document.getElementById("title").value,
             cylinder: document.getElementById("cylinder").value,
-            paintColor: document.getElementById("paintColor").value,
-            condition: document.getElementById("condition").value,
+            color: document.getElementById("paintColor").value,
+            carCondition: document.getElementById("condition").value,
             description: document.getElementById("description").value
         }
 
@@ -538,12 +539,16 @@
 
             if(res.ok){
                 const data = await res.json();
+                console.log("Car uploaded successfully")
+                console.log(data)
                 carId = data.id;
                 response.textContent = `Successfully uploaded car (id ${carId})`;
                 response.style.color = 'green';
             }
             else{
                 const text = await res.text();
+                console.log("Error in car upload response")
+                console.log(text)
                 response.textContent = text;
                 response.style.color = 'red';
             }
@@ -583,11 +588,23 @@
             if(!mongoResponse.ok){
                 throw new Error(await mongoResponse.text())
             }
+            console.log("Image uploaded to mongodb successfully")
             const mongoIdData = await mongoResponse.json();
 
             pictureId = mongoIdData.ids;
 
             //Link photos to car
+
+            if(pictureId === null){
+                console.log("pictureId is null")
+            }
+            if(carId === null){
+                console.log("carId is null")
+            }
+            if(carId === null || pictureId === null){
+                console.log("Aborting linking car to the mongodb")
+                return
+            }
 
             try{
                 const pictureUpdateBody = {

@@ -11,14 +11,15 @@ public record CarUploadDTO(
         @Positive int mileage,
         @Positive double price,
         @NotNull Long id,
+
         String transmission,
         String drive,
         String fuel,
-        String type,
+        String carType,
         String title,
         String cylinder,
         String color,
-        String condition,
+        String carCondition,
         String description
 ) {
 

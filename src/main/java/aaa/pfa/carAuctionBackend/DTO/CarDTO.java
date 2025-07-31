@@ -12,7 +12,7 @@ public record CarDTO(
          String datePosted,
          String ownerUsername,
          Long user_id,
-         List<String> picUrl
+         List<String> pictureURL
 ) {
 
 }

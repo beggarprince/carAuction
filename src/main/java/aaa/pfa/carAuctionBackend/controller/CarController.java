@@ -44,7 +44,6 @@ public class CarController {
     public ResponseEntity<CarUploadResponseDTO> uploadCar(
             @Valid
             @RequestBody CarUploadDTO dto
-
     ){
 
         Car newCar = carService.registerCar(dto);

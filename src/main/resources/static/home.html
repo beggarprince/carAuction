@@ -34,7 +34,7 @@
             <select id="fetchType">
                 <option value="top5desc">Most Recent</option>
             </select>
-            <button id="serachButton">Search</button>
+            <button id="searchButton">Search</button>
         </div>
     </div>
 </div>
@@ -186,7 +186,7 @@
 
 <template id="carCardTemplate">
     <div class="item-card">
-        <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car">
+        <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car" id="cardImage">
         <h4 id="cardTitle"></h4>
         <div class="price" id="price">$2000</div>
         <div class="description" id="description">Description</div>
@@ -220,7 +220,9 @@
 
 <script src="js/appData.js"></script>
 <script src="js/homeFetchDynamicData.js"></script>
-<script src="js/dataFetcher.js"></script>
+<script src="js/mongoFetchPicture.js"></script>
+
+<script src="js/dataFetcher.js">import {mongoDbFetchPicture} from "./js/mongoFetchPicture.js";</script>
 <script src="js/homeEventListener.js"></script>
 <script src="js/dailyQuoteZen.js"></script>
 

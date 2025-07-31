@@ -40,7 +40,7 @@ public class Car {
 
     //This is going to be a ton of information that is optional
     @Column
-    private String transmission, drive, fuel, type, title, cylinder, color, condition, description;
+    private String transmission, drive, fuel, carType, title, cylinder, color, carCondition, description;
 
     protected Car(){};
 
@@ -55,11 +55,11 @@ public class Car {
         this.transmission = builder.transmission;
         this.drive = builder.drive;
         this.fuel = builder.fuel;
-        this.type = builder.type;
+        this.carType = builder.carType;
         this.title = builder.title;
         this.cylinder = builder.cylinder;
         this.color = builder.color;
-        this.condition = builder.condition;
+        this.carCondition = builder.carCondition;
         this.datePosted = new Date();
         this.description = builder.description;
         printDetails();
@@ -79,11 +79,11 @@ public class Car {
         private String transmission;
         private String drive;
         private String fuel;
-        private String type;
+        private String carType;
         private String title;
         private String cylinder;
         private String color;
-        private String condition;
+        private String carCondition;
         private String description;
 
         public Builder(String make, String model, int year, int mileage, double price, User user) {
@@ -111,8 +111,8 @@ public class Car {
             return this;
         }
 
-        public Builder type(String type) {
-            this.type = type;
+        public Builder carType(String type) {
+            this.carType = type;
             return this;
         }
 
@@ -131,8 +131,8 @@ public class Car {
             return this;
         }
 
-        public Builder condition(String condition) {
-            this.condition = condition;
+        public Builder carCondition(String condition) {
+            this.carCondition = condition;
             return this;
         }
 
@@ -198,8 +198,8 @@ public class Car {
         if (fuel != null) {
             System.out.println("Fuel: " + fuel);
         }
-        if (type != null) {
-            System.out.println("Type: " + type);
+        if (carType != null) {
+            System.out.println("Type: " + carType);
         }
         if (title != null) {
             System.out.println("Title: " + title);
@@ -210,8 +210,8 @@ public class Car {
         if (color != null) {
             System.out.println("Color: " + color);
         }
-        if (condition != null) {
-            System.out.println("Condition: " + condition);
+        if (carCondition != null) {
+            System.out.println("Condition: " + carCondition);
         }
         if(description != null){
             System.out.println("Description: " + description);

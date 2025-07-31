@@ -1,5 +1,5 @@
 
- const dataFetcher = {
+const dataFetcher = {
 
         // Fetch cars data
         async fetchCars() {
@@ -139,27 +139,30 @@
             dataOutput.appendChild(clone)
 
         },
+    //This is where we build the cards
         displayAllAsCards(){
 
             const template = document.getElementById('carCardTemplate')
             const dataOutput = document.getElementById('dataOutput')
 
-
             if(!template || !dataOutput) return;
 
             dataOutput.innerHTML = ""
 
-            appData.cars.forEach((car, index) => {
+            appData.cars.forEach((car) => {
 
 
                 const card = template.content.cloneNode(true)
 
                 const cardTitle = card.getElementById('cardTitle')
                 const cardPrice = card.getElementById('price')
+                const cardImage = card.getElementById("cardImage")
 
                 const year = car.year || "Unknown"
                 const make = car.make || "Unknown"
                 const model = car.model || "Unknown"
+                const imageUrl = car.pictureUrl?.[0];
+                let l = car.pictureUrl[0];
 
                 const title = `${year} ${make} ${model}`
                 const price = car.price || "Unknown"
@@ -171,8 +174,72 @@
                     cardPrice.textContent = price
                 }
 
+                let mongoResponse ;
+
+                if (imageUrl !== null) {
+                    console.log("Attempting to fetch image")
+                    mongoResponse = mongoDbFetchPicture(); // URL or n/a
+                    if (mongoResponse !== "n/a") {
+                        cardImage.src = mongoResponse;
+                        cardImage.style.display = 'inline'
+                    }
+                }
+                else{
+                    console.log("No image associated with ar")
+                }
+
+
                 dataOutput.appendChild(card)
             })
 
         }
+
 }
+
+// public record CarDTO(
+//     Long id,
+//     String make,
+//     String model,
+//     int year,
+//     int mileage,
+//     double price,
+//     String datePosted,
+//     String ownerUsername,
+//     Long user_id,
+// List<String> pictureURL
+// ) {
+//
+// }
+
+
+//Example response
+//     [
+//     {
+//         "id": 21,
+//         "make": "Ford",
+//         "model": "sad",
+//         "year": 1998,
+//         "mileage": 2000,
+//         "price": 2000,
+//         "datePosted": "2025-07-30 22:19:38.943",
+//         "ownerUsername": null,
+//         "user_id": null,
+//         "picUrl": [
+//             "688ae0ca88f9007092c81394"
+//         ]
+//     },
+//         {
+//             "id": 20,
+//             "make": "Ford",
+//             "model": "BroncoMK2",
+//             "year": 5,
+//             "mileage": 5,
+//             "price": 5,
+//             "datePosted": "2025-07-23 18:34:24.679",
+//             "ownerUsername": null,
+//             "user_id": null,
+//             "picUrl": [
+//                 "68817180ef732875df392662"
+//             ]
+//         },
+    //Continued with more cars
