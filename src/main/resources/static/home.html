@@ -172,7 +172,9 @@
             </div>
         </div>
 
-        <div id="dataOutput"></div>
+        <div id="dataOutput"
+        class="dataOutput"
+        ></div>
 
         <p>This is the main content end</p>
     </div>
@@ -183,17 +185,18 @@
 
 
 
-
+<!--This is the card view -->
 <template id="carCardTemplate">
     <div class="item-card">
-        <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car" id="cardImage">
         <h4 id="cardTitle"></h4>
-        <div class="price" id="price">$2000</div>
-        <div class="description" id="description">Description</div>
+        <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car" id="cardImage">
+        <div class="price" id="cardPrice">$2000</div>
+        <div class="description" id="cardDescription">Description</div>
         <div class="meta">Posted recently</div>
     </div>
 </template>
 
+<!--This is to spit out the json -->
 <template id="carStringTest">
     <div class="data-display">
         <h3>Fetched Data:</h3>
@@ -202,12 +205,11 @@
 </template>
 
 <footer>
-    <p>Copyright © 2025 Circus of Value Car Marketplace. All rights reserved.</p>
+    <p>Circus of Value Car Marketplace</p>
 </footer>
 
 <script>
 
-    // Basic functionality for demonstration
     document.addEventListener('DOMContentLoaded', function() {
         const buttons = document.querySelectorAll('.filter-controls button');
         buttons.forEach(button => {

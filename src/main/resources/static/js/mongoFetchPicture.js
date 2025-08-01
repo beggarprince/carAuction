@@ -1,9 +1,9 @@
  const mongoDbFetchPicture = async (url) => {
 
-    console.log("Downloading picture " + url)
+  //  console.log("Downloading picture " + url)
 
     if (url === null || url === "undefined") {
-        console.log("URL is null")
+      //  console.log("URL is null")
         return "n/a";
     }
 

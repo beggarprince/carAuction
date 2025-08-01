@@ -109,7 +109,8 @@ public class CarController {
                     car.getDatePosted().toString(),
                     car.getUser().username,
                     car.getUser().id,
-                    car.getPicturesURL()
+                    car.getPicturesURL(),
+                    car.getDescription()
             );
             carDTOList.add(carDTO);
         }

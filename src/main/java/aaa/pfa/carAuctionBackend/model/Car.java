@@ -180,6 +180,10 @@ public class Car {
         return datePosted;
     }
 
+    public String getDescription(){
+        return description;
+    }
+
     public void printDetails() {
         System.out.println("Car ID: " + id);
         System.out.println("Make: " + make);

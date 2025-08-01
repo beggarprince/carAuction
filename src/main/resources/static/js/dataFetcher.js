@@ -1,9 +1,12 @@
 
+let carFetchLock = false;
+
 const dataFetcher = {
 
         // Fetch cars data
         async fetchCars() {
             try {
+                document.getElementById('')
                 const fetchType = document.getElementById('fetchType').value;
                 const response = await fetch(`/cars/getList?filter=${fetchType}`, {
                     method: 'POST'
@@ -139,14 +142,21 @@ const dataFetcher = {
             dataOutput.appendChild(clone)
 
         },
+
     //This is where we build the cards
         async displayAllAsCards() {
 
+            if(carFetchLock) return
+
+            carFetchLock = true;
+
             const template = document.getElementById('carCardTemplate')
             const dataOutput = document.getElementById('dataOutput')
+            const grid = document.getElementById('itemsGrid')
 
             if (!template || !dataOutput) return;
 
+            grid.innerHTML = ""
             dataOutput.innerHTML = ""
 
             for (const car of appData.cars) {
@@ -156,14 +166,17 @@ const dataFetcher = {
 
                 console.log(car + "\n")
                 const cardTitle = card.getElementById('cardTitle')
-                const cardPrice = card.getElementById('price')
+                const cardPrice = card.getElementById('cardPrice')
                 const cardImage = card.getElementById("cardImage")
+                const cardDescription = card.getElementById('cardDescription')
 
                 const year = car.year || "Unknown"
                 const make = car.make || "Unknown"
                 const model = car.model || "Unknown"
-                const datePosted = car.datePosted;
+                const datePosted = car.datePosted || "";
 
+                //temp to differentiate
+                const descrtiption = car.id //car.description || "";
                 const pictureURL = car.pictureURL
 
                 const title = `${year} ${make} ${model}`
@@ -182,63 +195,20 @@ const dataFetcher = {
 
                     if (mongoResponse !== "n/a") {
                         cardImage.src = mongoResponse;
-                        cardImage.style.display = 'inline'
+                       // cardImage.style.display = 'inline'
                     }
                 } else {
                     console.log("No image associated with car: " + title)
                 }
 
+                if(descrtiption){
+                    cardDescription.textContent = descrtiption;
+                }
+
                 dataOutput.appendChild(card)
             }
 
+            carFetchLock = false;
         }
 
 }
-
-// public record CarDTO(
-//     Long id,
-//     String make,
-//     String model,
-//     int year,
-//     int mileage,
-//     double price,
-//     String datePosted,
-//     String ownerUsername,
-//     Long user_id,
-// List<String> pictureURL
-// ) {
-//
-// }
-
-
-//Example response
-//     [
-//     {
-//         "id": 21,
-//         "make": "Ford",
-//         "model": "sad",
-//         "year": 1998,
-//         "mileage": 2000,
-//         "price": 2000,
-//         "datePosted": "2025-07-30 22:19:38.943",
-//         "ownerUsername": null,
-//         "user_id": null,
-//         "picUrl": [
-//             "688ae0ca88f9007092c81394"
-//         ]
-//     },
-//         {
-//             "id": 20,
-//             "make": "Ford",
-//             "model": "BroncoMK2",
-//             "year": 5,
-//             "mileage": 5,
-//             "price": 5,
-//             "datePosted": "2025-07-23 18:34:24.679",
-//             "ownerUsername": null,
-//             "user_id": null,
-//             "picUrl": [
-//                 "68817180ef732875df392662"
-//             ]
-//         },
-    //Continued with more cars
