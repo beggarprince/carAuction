@@ -35,6 +35,7 @@ public class CarController {
 
     @GetMapping("/uploadCar")
     public RedirectView register(){
+
         return new RedirectView("/uploadCar.html");
     }
 
@@ -78,23 +79,94 @@ public class CarController {
         return ResponseEntity.ok().build();
     }
 
+    //Spaghetti
     @PostMapping("/cars/getList")
     public ResponseEntity<List<CarDTO>> getCars(
             @RequestParam String filter
     ){
         List<Car> carList = new ArrayList<>();
 
-        switch(filter){
-            case "top5desc":
-                carList = carRepository.findTop5ByOrderByDatePostedDesc();
-                break;
-            case "top5pricedesc":
-                break;
-                default:
-                    carList  = carRepository.findAll();
-                   // n.forEach(carList::add);
-                    break;
+        if (filter.equals("top5desc")) {
+            carList = carRepository.findTop50ByOrderByDatePostedDesc();
         }
+        else if(filter.contains("price")) {
+         if (filter.contains("min_Price") && filter.contains("max_Price")) {
+
+                int minPrice = Integer.parseInt(filter.split("min_Price=")[1].split("&")[0]);
+
+                int maxPrice = Integer.parseInt(filter.split("max_Price=")[1]);
+
+                carList = carRepository.findAllByPriceBetween(minPrice, maxPrice);
+            } else if (filter.contains("min_Price")) {
+                int price = Integer.parseInt(filter.split("min_Price=")[1]);
+                carList = carRepository.findAllByPriceIsLessThan((double) price);
+            } else if (filter.contains("maxPrice")) {
+                int price = Integer.parseInt(filter.split("max_Price=")[1]);
+                carList = carRepository.findAllByPriceGreaterThan(price);
+            }
+        }
+
+        //Would probably be better to have lessthan and greaterthan inside the url regardless and check for ""
+        else if(filter.contains("findAllByYear")){
+
+            boolean lessThan = filter.contains("LessThan");
+
+            boolean greaterThan = filter.contains("greaterThan");
+
+            if(lessThan && greaterThan){
+                int minYear = Integer.parseInt(filter.split("LessThan=")[1].split("0")[0]) ;
+                int maxYear = Integer.parseInt(filter.split("GreaterThan=")[1]);
+                carList = carRepository.findAllByYearBetween(minYear, maxYear);
+            }
+
+            else if(lessThan){
+                int minYear = Integer.parseInt(filter.split("LessThan=")[1].split("0")[0]) ;
+                carList = carRepository.findAllByYearLessThan(minYear);
+            }
+
+            else if(greaterThan){
+                int maxYear = Integer.parseInt(filter.split("GreaterThan=")[1]);
+                carList = carRepository.findAllByYearGreaterThan(maxYear);
+            }
+
+            }
+
+        else if(filter.contains("color")){
+            String color = filter.split("color=")[1];
+            carList = carRepository.findAllByColor(color);
+        }
+
+        else if(filter.contains("make")){
+            String make = filter.split("make=")[1];
+            carList = carRepository.findAllByMake(make);
+        }
+
+        else if(filter.contains("mileage")){
+            boolean lessThan = filter.contains("lessThan");
+            boolean greaterThan = filter.contains("greaterThan");
+
+            if(lessThan && greaterThan){
+                int lessThanMileage = Integer.parseInt(filter.split("mileageLessThan=")[1].split("0")[0]);
+                int greaterThanMileage = Integer.parseInt(filter.split("mileageGreaterThan=")[1]);
+                carList = carRepository.findAllByMileageBetween(lessThanMileage, greaterThanMileage);
+            }
+            else if(lessThan){
+                int mileage = Integer.parseInt(filter.split("=")[1]);
+                carList = carRepository.findAllByYearLessThan(mileage);
+            }
+            else if(greaterThan){
+                int mileage = Integer.parseInt(filter.split("=")[1]);
+                carList = carRepository.findAllByMileageGreaterThan(mileage);
+            }
+
+        }
+
+        else {
+            System.out.println("Default case");
+            carList = carRepository.findAll();
+            // n.forEach(carList::add);
+        }
+
 
         List<CarDTO> carDTOList = new ArrayList<>();
 
