@@ -75,17 +75,30 @@
         </div>
 
         <!--Categories -->
+<!--        <div class="sidebar-section">-->
+<!--            <h3>Categories</h3>-->
+<!--            <ul>-->
+<!--                <li><a href="#">All cars</a></li>-->
+<!--                <li><a href="#">Convertibles</a></li>-->
+<!--                <li><a href="#">Coupes</a></li>-->
+<!--                <li><a href="#">Sedans</a></li>-->
+<!--                <li><a href="#">SUVs</a></li>-->
+<!--                <li><a href="#">Trucks</a></li>-->
+<!--                <li><a href="#">Motorcycles</a></li>-->
+<!--                <li><a href="#">Other</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
         <div class="sidebar-section">
             <h3>Categories</h3>
-            <ul>
-                <li><a href="#">All cars</a></li>
-                <li><a href="#">Convertibles</a></li>
-                <li><a href="#">Coupes</a></li>
-                <li><a href="#">Sedans</a></li>
-                <li><a href="#">SUVs</a></li>
-                <li><a href="#">Trucks</a></li>
-                <li><a href="#">Motorcycles</a></li>
-                <li><a href="#">Other</a></li>
+            <ul class="collapsible-content">
+                <li><input type="checkbox" id="filter-convertible" name="category" value="convertible"><label for="filter-convertible">Convertibles</label></li>
+                <li><input type="checkbox" id="filter-coupe" name="category" value="coupe"><label for="filter-coupe">Coupes</label></li>
+                <li><input type="checkbox" id="filter-sedan" name="category" value="sedan"><label for="filter-sedan">Sedans</label></li>
+                <li><input type="checkbox" id="filter-suv" name="category" value="suv"><label for="filter-suv">SUVs</label></li>
+                <li><input type="checkbox" id="filter-truck" name="category" value="truck"><label for="filter-truck">Trucks</label></li>
+                <li><input type="checkbox" id="filter-motorcycle" name="category" value="motorcycle"><label for="filter-motorcycle">Motorcycles</label></li>
+                <li><input type="checkbox" id="filter-other" name="category" value="other"><label for="filter-other">Other</label></li>
             </ul>
         </div>
 
@@ -534,6 +547,25 @@
 
 <script>
     //Hide all drop down filters
+    //Reset? i can call the fun later i guess
+    const boxes = document.querySelectorAll('div[id^="drop-"]');
+
+    const hideDropButton = document.getElementById('collapseFilters')
+
+    hideDropButton.addEventListener('click', async () =>{
+        console.log("meow")
+        boxes.forEach( box =>{
+                const header = box.querySelector('.collapsible-header')
+                const arrow = box.querySelector('.collapsible-arrow')
+                const content = box.querySelector('.collapsible-content')
+
+                header.classList.remove('expanded');
+                arrow.classList.remove('expanded');
+                content.classList.remove('expanded')
+            }
+        )
+
+    })
 
 </script>
 
