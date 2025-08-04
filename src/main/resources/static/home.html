@@ -54,6 +54,7 @@
                 <button id="carCardTemplateTest">Show as Grid</button>
                 <button id="clearFilters">Clear Filters</button>
                 <button id="collapseFilters">Collapse Filters</button>
+                <button id="applyFilters">Apply filters</button>
             </div>
         </div>
 
@@ -91,14 +92,21 @@
 
         <div class="sidebar-section">
             <h3>Categories</h3>
-            <ul class="collapsible-content">
-                <li><input type="checkbox" id="filter-convertible" name="category" value="convertible"><label for="filter-convertible">Convertibles</label></li>
-                <li><input type="checkbox" id="filter-coupe" name="category" value="coupe"><label for="filter-coupe">Coupes</label></li>
-                <li><input type="checkbox" id="filter-sedan" name="category" value="sedan"><label for="filter-sedan">Sedans</label></li>
-                <li><input type="checkbox" id="filter-suv" name="category" value="suv"><label for="filter-suv">SUVs</label></li>
-                <li><input type="checkbox" id="filter-truck" name="category" value="truck"><label for="filter-truck">Trucks</label></li>
-                <li><input type="checkbox" id="filter-motorcycle" name="category" value="motorcycle"><label for="filter-motorcycle">Motorcycles</label></li>
-                <li><input type="checkbox" id="filter-other" name="category" value="other"><label for="filter-other">Other</label></li>
+            <ul style="padding: 4px">
+                <li><input type="checkbox" id="filter-convertible" name="category" value="convertible">
+                    <label for="filter-convertible">Convertibles</label></li>
+                <li><input type="checkbox" id="filter-coupe" name="category" value="coupe">
+                    <label for="filter-coupe">Coupes</label></li>
+                <li><input type="checkbox" id="filter-sedan" name="category" value="sedan">
+                    <label for="filter-sedan">Sedans</label></li>
+                <li><input type="checkbox" id="filter-suv" name="category" value="suv">
+                    <label for="filter-suv">SUVs</label></li>
+                <li><input type="checkbox" id="filter-truck" name="category" value="truck">
+                    <label for="filter-truck">Trucks</label></li>
+                <li><input type="checkbox" id="filter-motorcycle" name="category" value="motorcycle">
+                    <label for="filter-motorcycle">Motorcycles</label></li>
+                <li><input type="checkbox" id="filter-other" name="category" value="other">
+                    <label for="filter-other">Other</label></li>
             </ul>
         </div>
 
@@ -521,6 +529,7 @@
     const filterCheckboxes = document.querySelectorAll('input[id^="filter-"]');
     const resetFilterButton = document.getElementById('clearFilters')
 
+    //Manual filters
     const makeFilter = document.getElementById('make')
     const modelFilter = document.getElementById('model')
     //const typeFilter = document.getElementById('vehicleType')
@@ -553,7 +562,6 @@
     const hideDropButton = document.getElementById('collapseFilters')
 
     hideDropButton.addEventListener('click', async () =>{
-        console.log("meow")
         boxes.forEach( box =>{
                 const header = box.querySelector('.collapsible-header')
                 const arrow = box.querySelector('.collapsible-arrow')
@@ -566,6 +574,37 @@
         )
 
     })
+
+</script>
+
+<script>
+    //Build complex query
+
+        //Manual filters
+    const makeFilter1 = document.getElementById('make')
+    const modelFilter1 = document.getElementById('model')
+    //const typeFilter = document.getElementById('vehicleType')
+    const priceFilterMin1 = document.getElementById('minPrice')
+    const priceFilterMax1 = document.getElementById('maxPrice')
+
+        //Drop down filters
+    const filterCheckboxes1 = document.querySelectorAll('input[id^="filter-"]');
+
+    let s = ""
+
+    const applyFilterBtn = document.getElementById('applyFilters')
+
+        applyFilterBtn.addEventListener('click', async () => {
+            s += "Make: " + makeFilter1.value + "\n";
+            s += "Model:" + modelFilter1.innerText;
+            s += "Price range: " + priceFilterMin1.value + "-" + priceFilterMax1.value + "\n";
+
+            filterCheckboxes1.forEach(checkBox => {
+               if(checkBox.checked) s += checkBox.value + "\n";
+            });
+
+            console.log(s)
+        })
 
 </script>
 
