@@ -2,7 +2,8 @@
     await dataFetcher.fetchCurrentUser();
 })();
 
-document.getElementById('fetchCars').addEventListener('click', async () => {
+document.getElementById('fetchCars')
+    .addEventListener('click', async () => {
     await dataFetcher.fetchCars();
     dataFetcher.displayAllData();
 });

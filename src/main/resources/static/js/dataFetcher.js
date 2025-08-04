@@ -1,5 +1,5 @@
 
-let carFetchLock = false;
+let buttonLock = false;
 
 const dataFetcher = {
 
@@ -144,11 +144,12 @@ const dataFetcher = {
         },
 
     //This is where we build the cards
+    //TODO atm we fetch from the mongodb everytime, it should instead cache some images
         async displayAllAsCards() {
 
-            if(carFetchLock) return
+            if(buttonLock) return
 
-            carFetchLock = true;
+            buttonLock = true;
 
             const template = document.getElementById('carCardTemplate')
             const dataOutput = document.getElementById('dataOutput')
@@ -164,20 +165,22 @@ const dataFetcher = {
 
                 const card = template.content.cloneNode(true)
 
-                console.log(car + "\n")
+               // console.log(car + "\n")
                 const cardTitle = card.getElementById('cardTitle')
                 const cardPrice = card.getElementById('cardPrice')
                 const cardImage = card.getElementById("cardImage")
                 const cardDescription = card.getElementById('cardDescription')
+                const cardDatePosted = card.getElementById('datePosted')
 
                 const year = car.year || "Unknown"
                 const make = car.make || "Unknown"
                 const model = car.model || "Unknown"
-                const datePosted = car.datePosted || "";
+                const datePosted = timeAgoFormat(car.datePosted ) || "";
 
                 //temp to differentiate
-                const descrtiption = car.id //car.description || "";
+                const description = car.description || "";
                 const pictureURL = car.pictureURL
+
 
                 const title = `${year} ${make} ${model}`
                 const price = car.price || "Unknown"
@@ -186,7 +189,7 @@ const dataFetcher = {
                     cardTitle.textContent = title
                 }
                 if (price) {
-                    cardPrice.textContent = price
+                    cardPrice.textContent = "$" + price
                 }
 
                 if (pictureURL) {
@@ -201,14 +204,17 @@ const dataFetcher = {
                     console.log("No image associated with car: " + title)
                 }
 
-                if(descrtiption){
-                    cardDescription.textContent = descrtiption;
+                if(description){
+                    cardDescription.textContent = description;
+                }
+                if(datePosted){
+                    cardDatePosted.textContent = datePosted;
                 }
 
                 dataOutput.appendChild(card)
             }
 
-            carFetchLock = false;
+            buttonLock = false;
         }
 
 }

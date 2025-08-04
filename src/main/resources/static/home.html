@@ -52,8 +52,18 @@
                 <button id="debugShowCar">Show Car Data</button>
                 <button id="fetchAllData">Load All Data</button>
                 <button id="carCardTemplateTest">Show as Grid</button>
+                <button id="clearFilters">Clear Filters</button>
+                <button id="collapseFilters">Collapse Filters</button>
             </div>
         </div>
+
+        <div class="sidebar-section">
+            <h3>Quote of the Day</h3>
+            <div class="quote-of-the-day" id="quote-of-the-day">
+                "I really need to get a resource with safe, pg quotes" - bp
+            </div>
+        </div>
+
 
         <!--Price filtering -->
         <div class="sidebar-section">
@@ -64,11 +74,27 @@
             <input type="number" placeholder="max" id="maxPrice">
         </div>
 
+        <!--Categories -->
+        <div class="sidebar-section">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="#">All cars</a></li>
+                <li><a href="#">Convertibles</a></li>
+                <li><a href="#">Coupes</a></li>
+                <li><a href="#">Sedans</a></li>
+                <li><a href="#">SUVs</a></li>
+                <li><a href="#">Trucks</a></li>
+                <li><a href="#">Motorcycles</a></li>
+                <li><a href="#">Other</a></li>
+            </ul>
+        </div>
+
         <!-- make and model -->
         <div class="sidebar-section">
             <h3>Make and Model</h3>
             <div class="form-group">
-                <label for="make">Make<span class="required"></span></label>
+                <label for="make">Make
+                </label>
                 <select id="make" name="make" required>
                     <option value="" disabled selected>Select a Car Make</option>
                     <option value="Chevrolet">Chevrolet</option>
@@ -107,31 +133,259 @@
                     </optgroup>
                 </select>
             </div>
-            <label for="model"></label>
+            <div class="form-group">
+            <label for="model" >Model</label>
             <input type="text" id="model" placeholder="Model">
-        </div>
-
-        <!--Categories -->
-        <div class="sidebar-section">
-            <h3>Categories</h3>
-            <ul>
-                <li><a href="#">All cars</a></li>
-                <li><a href="#">Convertibles</a></li>
-                <li><a href="#">Coupes</a></li>
-                <li><a href="#">Sedans</a></li>
-                <li><a href="#">SUVs</a></li>
-                <li><a href="#">Trucks</a></li>
-                <li><a href="#">Motorcycles</a></li>
-                <li><a href="#">Other</a></li>
-            </ul>
-        </div>
-
-        <div class="sidebar-section">
-            <h3>Quote of the Day</h3>
-            <div class="quote-of-the-day" id="quote-of-the-day">
-                "I really need to get a resource with safe, pg quotes" - bp
             </div>
         </div>
+
+
+
+
+        <!--Niche filters, placeholder to make it easy to collapse-->
+        <div id="nicheFilters">
+            <!--Niche filters -->
+            <div class="collapsible"
+                 id="drop-transmission"
+            >
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+
+                    <h3 class="collapsible-title">Transmission</h3>
+
+                    <span class="collapsible-arrow">▼</span>
+                </div>
+
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-manual" name="transmission" value="manual">
+                            <label for="filter-manual">Manual</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-automatic" name="transmission" value="automatic">
+                            <label for="filter-automatic">Automatic</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-transmission-other" name="transmission" value="other">
+                            <label for="filter-transmission-other">Other</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible"
+                 id="drop-drive"
+            >
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+
+                    <h3 class="collapsible-title">Drive</h3>
+
+                    <span class="collapsible-arrow">▼</span>
+                </div>
+
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-fwd" name="drive" value="fwd">
+                            <label for="filter-fwd">FWD</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-rwd" name="drive" value="rwd">
+                            <label for="filter-rwd">RWD</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-4wd" name="drive" value="4wd">
+                            <label for="filter-4wd">4WD</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible"
+                 id="drop-fuel"
+            >
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+
+                    <h3 class="collapsible-title">Fuel</h3>
+
+                    <span class="collapsible-arrow">▼</span>
+                </div>
+
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-gas" name="fuel" value="gas">
+                            <label for="filter-gas">Gas</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-diesel" name="fuel" value="diesel">
+                            <label for="filter-diesel">Diesel</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-hybrid" name="fuel" value="hybrid">
+                            <label for="filter-hybrid">Hybrid</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-electric" name="fuel" value="electric">
+                            <label for="filter-electric">Electric</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-fuel-other" name="fuel" value="other">
+                            <label for="filter-fuel-other">Other</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible"
+                 id="drop-title"
+            >
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+
+                    <h3 class="collapsible-title">Title Status</h3>
+
+                    <span class="collapsible-arrow">▼</span>
+                </div>
+
+                <div class="collapsible-content">
+
+                    <div class="collapsible-inner">
+
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-clean" name="title" value="clean">
+                            <label for="filter-clean">Clean</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-salvage" name="title" value="salvage">
+                            <label for="filter-salvage">Salvage</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-rebuilt" name="title" value="rebuilt">
+                            <label for="filter-rebuilt">Rebuilt</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-parts-only" name="title" value="parts only">
+                            <label for="filter-parts-only">Parts Only</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-lien" name="title" value="lien">
+                            <label for="filter-lien">Lien</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-missing" name="title" value="missing">
+                            <label for="filter-missing">Missing</label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible"
+                 id="drop-paint"
+            >
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+
+                    <h3 class="collapsible-title">Paint Color</h3>
+
+                    <span class="collapsible-arrow">▼</span>
+                </div>
+
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-black" name="paint" value="black">
+                            <label for="filter-black">Black</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-blue" name="paint" value="blue">
+                            <label for="filter-blue">Blue</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-brown" name="paint" value="brown">
+                            <label for="filter-brown">Brown</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-green" name="paint" value="green">
+                            <label for="filter-green">Green</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-grey" name="paint" value="grey">
+                            <label for="filter-grey">Grey</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-orange" name="paint" value="orange">
+                            <label for="filter-orange">Orange</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-purple" name="paint" value="purple">
+                            <label for="filter-purple">Purple</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-red" name="paint" value="red">
+                            <label for="filter-red">Red</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-silver" name="paint" value="silver">
+                            <label for="filter-silver">Silver</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-white" name="paint" value="white">
+                            <label for="filter-white">White</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-yellow" name="paint" value="yellow">
+                            <label for="filter-yellow">Yellow</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-custom" name="paint" value="custom">
+                            <label for="filter-custom">Custom</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible"
+                 id="drop-condition"
+            >
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+
+                    <h3 class="collapsible-title">Condition</h3>
+
+                    <span class="collapsible-arrow">▼</span>
+                </div>
+
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-new" name="condition" value="new">
+                            <label for="filter-new">New</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-like-new" name="condition" value="like new">
+                            <label for="filter-like-new">Like New</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-excellent" name="condition" value="excellent">
+                            <label for="filter-excellent">Excellent</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-good" name="condition" value="good">
+                            <label for="filter-good">Good</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-fair" name="condition" value="fair">
+                            <label for="filter-fair">Fair</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filter-condition-salvage" name="condition" value="salvage">
+                            <label for="filter-condition-salvage">Salvage</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            </div>
 
         <!--Useful Links -->
         <div class="sidebar-section">
@@ -144,6 +398,7 @@
                 <li><a href="#">Selling Guide</a></li>
             </ul>
         </div>
+
     </div>
 
     <!--Main content -->
@@ -181,8 +436,8 @@
     <div>
 
     </div>
-</div>
 
+</div>
 
 
 <!--This is the card view -->
@@ -192,7 +447,7 @@
         <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car" id="cardImage">
         <div class="price" id="cardPrice">$2000</div>
         <div class="description" id="cardDescription">Description</div>
-        <div class="meta">Posted recently</div>
+        <div class="meta" id="datePosted">Posted recently</div>
     </div>
 </template>
 
@@ -203,6 +458,7 @@
         <pre id="dataDisplay"></pre>
     </div>
 </template>
+
 
 <footer>
     <p>Circus of Value Car Marketplace</p>
@@ -223,10 +479,63 @@
 <script src="js/appData.js"></script>
 <script src="js/homeFetchDynamicData.js"></script>
 <script src="js/mongoFetchPicture.js"></script>
-
-<script src="js/dataFetcher.js">import {mongoDbFetchPicture} from "./js/mongoFetchPicture.js";</script>
+<script src="js/dateFormatter.js"></script>
+<script src="js/dataFetcher.js">
+    import {mongoDbFetchPicture} from "./js/mongoFetchPicture.js"
+</script>
 <script src="js/homeEventListener.js"></script>
 <script src="js/dailyQuoteZen.js"></script>
+
+<script>
+    function toggleCollapsible(header) {
+        const parent = header;
+
+        const arrow = header.querySelector('.collapsible-arrow');
+        const content = header.nextElementSibling;
+
+        // Toggle the expanded class
+        arrow.classList.toggle('expanded');
+        content.classList.toggle('expanded');
+
+        //Signify the drop box has been clicked
+        parent.classList.toggle('expanded')
+    }
+
+</script>
+
+<script>
+    // Reset drop down filters to unchecked
+    const filterCheckboxes = document.querySelectorAll('input[id^="filter-"]');
+    const resetFilterButton = document.getElementById('clearFilters')
+
+    const makeFilter = document.getElementById('make')
+    const modelFilter = document.getElementById('model')
+    //const typeFilter = document.getElementById('vehicleType')
+    const priceFilterMin = document.getElementById(
+        'minPrice'
+    )
+    const priceFilterMax = document.getElementById('maxPrice')
+
+    resetFilterButton.addEventListener('click', async() =>{
+
+        filterCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        //Reset the other filters
+        makeFilter.value ="";
+        modelFilter.value = ""
+        //typeFilter.value=""
+        priceFilterMax.value=""
+        priceFilterMin.value =""
+    })
+
+</script>
+
+<script>
+    //Hide all drop down filters
+
+</script>
 
 </body>
 </html>
