@@ -21,6 +21,7 @@ document.getElementById('debugShowCar').addEventListener('click', () => {
 document.getElementById('fetchAllData').addEventListener('click', async () => {
     await dataFetcher.fetchAllData();
 });
-document.getElementById('carCardTemplateTest').addEventListener('click', async() =>{
+document.getElementById('showCarGrid').addEventListener('click', async() =>{
     await dataFetcher.displayAllAsCards();
+    await equalizeGridHeights();
 });
