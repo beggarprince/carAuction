@@ -1,0 +1,62 @@
+
+/*Collapsible filters */
+.collapsible {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #074388;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+/*4a90e2*/
+.collapsible-header.expanded{
+    background-color: #4a90e2;
+
+}
+
+.collapsible-header:hover {
+    background-color: #2d74bb;
+}
+
+.collapsible-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.collapsible-arrow {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-arrow.expanded {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: white;
+}
+
+.collapsible-content.expanded {
+    max-height: 500px;
+}
+
+.collapsible-inner {
+    padding: 20px;
+    border-top: 1px solid #e0e0e0;
+}

@@ -1,12 +1,9 @@
 package aaa.pfa.carAuctionBackend.controller;
 
-import aaa.pfa.carAuctionBackend.DTO.CarPictureDTO;
+import aaa.pfa.carAuctionBackend.DTO.*;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.repository.CarRepository;
-import aaa.pfa.carAuctionBackend.DTO.CarDTO;
 import aaa.pfa.carAuctionBackend.services.CarService;
-import aaa.pfa.carAuctionBackend.DTO.CarUploadDTO;
-import aaa.pfa.carAuctionBackend.DTO.CarUploadResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -188,6 +185,22 @@ public class CarController {
         }
 
         return ResponseEntity.ok(carDTOList);
+    }
+
+
+    //Advanced query
+    @PostMapping("/cars/advQuery")
+    public ResponseEntity<List<CarDTO>> getCarsAdv(
+            @Valid
+            @RequestBody CarFilterDTO body
+    ) {
+        String query = carService.FilteredListQuery(body);
+
+        //TODO test this i fucking hate jpa
+        List<Car> listOfCars = carRepository.findByCustomQuery(query);
+
+
+        return ResponseEntity.ok().build();
     }
 
 

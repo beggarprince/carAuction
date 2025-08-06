@@ -1,6 +1,7 @@
 package aaa.pfa.carAuctionBackend.services;
 
 
+import aaa.pfa.carAuctionBackend.DTO.CarFilterDTO;
 import aaa.pfa.carAuctionBackend.DTO.CarUploadDTO;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.model.User;
@@ -9,8 +10,11 @@ import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +39,30 @@ public class CarService {
 
         System.out.println("User id is:" + user.id);
 
+//        Car car = new Car.Builder(
+//                dto.make(),
+//                dto.model(),
+//                dto.year(),
+//                dto.mileage(),
+//                dto.price(),
+//                user).transmission(dto.transmission())
+//                .drive(dto.drive())
+//                .fuel(dto.fuel())
+//                .carType(dto.carType())
+//                .title(dto.title())
+//                .cylinder(dto.cylinder())
+//                .color(dto.color())
+//                .carCondition(dto.carCondition())
+//                .description(dto.description())
+//                .build();
+            Car car =  makeCar(user, dto);
+
+        user.addCarToUser(car);
+
+        return carRepository.save(car);
+    }
+
+    public Car makeCar(User user, CarUploadDTO dto){
         Car car = new Car.Builder(
                 dto.make(),
                 dto.model(),
@@ -52,9 +80,90 @@ public class CarService {
                 .description(dto.description())
                 .build();
 
-
-        user.addCarToUser(car);
-
-        return carRepository.save(car);
+        return car;
     }
+
+
+
+    public String FilteredListQuery(CarFilterDTO filters) {
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM cars WHERE 1=1");
+
+        List<Object> params = new ArrayList<>();
+
+        //category, make, model
+
+        addFilter(sql, params, "category", filters.categories());
+
+        addFilter(sql, params, "make", filters.makes());
+
+        //Model is text, not predefined
+
+        if(filters.model() != null && !filters.model().trim().isEmpty()){
+            sql.append(" AND model LIKE ?");
+            params.add("%" + filters.model().trim() + "%");
+        }
+
+        addFilter(sql, params, "transmission", filters.transmissions());
+        addFilter(sql, params, "drive_type", filters.drives());
+        addFilter(sql, params, "fuel_type", filters.fuels());
+        addFilter(sql, params, "title_status", filters.titleStatuses());
+        addFilter(sql, params, "paint_color", filters.paintColors());
+        addFilter(sql, params, "condition_status", filters.conditions());
+
+        // Add price range filters
+        if (filters.minPrice() != null) {
+            sql.append(" AND price >= ?");
+            params.add(filters.minPrice());
+        }
+        if (filters.maxPrice() != null) {
+            sql.append(" AND price <= ?");
+            params.add(filters.maxPrice());
+        }
+
+        // Add year range filters
+        if (filters.minYear() != null) {
+            sql.append(" AND year >= ?");
+            params.add(filters.minYear());
+        }
+        if (filters.maxYear() != null) {
+            sql.append(" AND year <= ?");
+            params.add(filters.maxYear());
+        }
+
+        // Add mileage filter
+        if (filters.maxMileage() != null) {
+            sql.append(" AND mileage <= ?");
+            params.add(filters.maxMileage());
+        }
+
+        sql.append(" ORDER BY created_at DESC");
+
+        return sql.toString();
+
+    }
+
+    private void addFilter(
+            StringBuilder sql,
+            List<Object> params,
+            String columnName,
+            List<String> values
+    ){
+        if( values != null && !values.isEmpty()){
+            sql.append(" AND ").append(columnName).append(" IN (");
+
+                for(int i = 0; i < values.size(); i++){
+                    sql.append("?");
+
+                    if( i < values.size() -1){
+                        sql.append(",");
+                    }
+
+                    params.add(values.get(i));
+                }
+
+                sql.append(")");
+        }
+    }
+
 }

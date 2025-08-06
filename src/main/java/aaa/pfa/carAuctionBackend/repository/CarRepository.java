@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 @RepositoryRestResource
-public interface CarRepository extends JpaRepository<Car, Long> {
+public interface CarRepository extends JpaRepository<Car, Long> , CarRepositoryCustomQuery{
 
 
     @Query
@@ -36,5 +36,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
                                     double priceBefore);
 
     List<Car> findAllByPriceGreaterThan(double priceIsGreaterThan);
+
+    List<Car> findByCustomQuery(String sql);
 
 }

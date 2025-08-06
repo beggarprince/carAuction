@@ -1,0 +1,94 @@
+
+/* Sidebar */
+.sidebar {
+    width: 225px;
+    flex-shrink: 1;
+}
+
+.sidebar-section {
+    background: white;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.sidebar-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #2c5aa0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.sidebar-section ul {
+    list-style: none;
+}
+
+.sidebar-section ul li {
+    margin-bottom: 5px;
+}
+
+.sidebar-section ul li a {
+    color: #2c5aa0;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.sidebar-section ul li a:hover {
+    text-decoration: underline;
+}
+
+.quote-of-the-day {
+    font-style: italic;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-controls select, .filter-controls button {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    background: white;
+    cursor: pointer;
+}
+
+.filter-controls button {
+    background-color: #f0f0f0;
+}
+
+.filter-controls button:hover {
+    background-color: #e0e0e0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #2c5aa0;
+}
+
+.form-group select,
+.sidebar input[type="text"],
+.sidebar input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+@media(max-width: 768px) {
+    .sidebar {
+        width: 100%;
+    }
+}
