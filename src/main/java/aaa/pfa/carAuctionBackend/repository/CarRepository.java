@@ -37,6 +37,6 @@ public interface CarRepository extends JpaRepository<Car, Long> , CarRepositoryC
 
     List<Car> findAllByPriceGreaterThan(double priceIsGreaterThan);
 
-    List<Car> findByCustomQuery(String sql);
+    //List<Car> findByCustomQuery(String sql);
 
 }

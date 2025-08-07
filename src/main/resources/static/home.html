@@ -79,24 +79,10 @@
             <input type="number" placeholder="max" id="maxPrice">
         </div>
 
-        <!--Categories -->
-<!--        <div class="sidebar-section">-->
-<!--            <h3>Categories</h3>-->
-<!--            <ul>-->
-<!--                <li><a href="#">All cars</a></li>-->
-<!--                <li><a href="#">Convertibles</a></li>-->
-<!--                <li><a href="#">Coupes</a></li>-->
-<!--                <li><a href="#">Sedans</a></li>-->
-<!--                <li><a href="#">SUVs</a></li>-->
-<!--                <li><a href="#">Trucks</a></li>-->
-<!--                <li><a href="#">Motorcycles</a></li>-->
-<!--                <li><a href="#">Other</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
 
         <div class="sidebar-section">
             <h3>Categories</h3>
-            <ul style="padding: 4px">
+            <ul style="padding: 4px" id="drop-categories">
                 <li><input type="checkbox" id="filter-convertible" name="category" value="convertible">
                     <label for="filter-convertible">Convertibles</label></li>
                 <li><input type="checkbox" id="filter-coupe" name="category" value="coupe">
@@ -183,15 +169,23 @@
                 <div class="collapsible-content">
                     <div class="collapsible-inner">
                         <div class="filter-option">
-                            <input type="checkbox" id="filter-manual" name="transmission" value="manual">
+                            <input type="checkbox"
+                                   id="filter-manual"
+                                   name="transmission"
+                                   value="manual">
                             <label for="filter-manual">Manual</label>
                         </div>
                         <div class="filter-option">
-                            <input type="checkbox" id="filter-automatic" name="transmission" value="automatic">
+                            <input type="checkbox"
+                                   id="filter-automatic"
+                                   name="transmission" value="automatic">
                             <label for="filter-automatic">Automatic</label>
                         </div>
                         <div class="filter-option">
-                            <input type="checkbox" id="filter-transmission-other" name="transmission" value="other">
+                            <input type="checkbox"
+                                   id="filter-transmission-other"
+                                   name="transmission"
+                                   value="other">
                             <label for="filter-transmission-other">Other</label>
                         </div>
                     </div>
@@ -263,7 +257,7 @@
             </div>
 
             <div class="collapsible"
-                 id="drop-title"
+                 id="drop-titleStatus"
             >
                 <div class="collapsible-header" onclick="toggleCollapsible(this)">
 
@@ -370,7 +364,7 @@
             </div>
 
             <div class="collapsible"
-                 id="drop-condition"
+                 id="drop-carCondition"
             >
                 <div class="collapsible-header" onclick="toggleCollapsible(this)">
 
@@ -585,31 +579,114 @@
 <script>
     //Build complex query
 
-        //Manual filters
-    const makeFilter1 = document.getElementById('make')
-    const modelFilter1 = document.getElementById('model')
-    //const typeFilter = document.getElementById('vehicleType')
-    const priceFilterMin1 = document.getElementById('minPrice')
-    const priceFilterMax1 = document.getElementById('maxPrice')
+    //json
+    // Initialize collections for each filter type
+    const filters = {
+        categories: [],
+        make: [],
+        model: null,
+        transmission: [],
+        drive: [],
+        fuel: [],
+        titleStatus: [],
+        paintColor: [],
+        carCondition: [],
+        minPrice: null,
+        maxPrice: null,
+        minYear: null,
+        maxYear: null,
+        maxMileage: null
+    };
 
-        //Drop down filters
-    const filterCheckboxes1 = document.querySelectorAll('input[id^="filter-"]');
 
-    let s = ""
 
-    const applyFilterBtn = document.getElementById('applyFilters')
+    const dropdowns = document.querySelectorAll('[id^="drop-"]')
 
-        applyFilterBtn.addEventListener('click', async () => {
-            s += "Make: " + makeFilter1.value + "\n";
-            s += "Model:" + modelFilter1.innerText;
-            s += "Price range: " + priceFilterMin1.value + "-" + priceFilterMax1.value + "\n";
+     const applyFilterBtn = document.getElementById('applyFilters')
+    applyFilterBtn.addEventListener('click', async () => {
 
-            filterCheckboxes1.forEach(checkBox => {
-               if(checkBox.checked) s += checkBox.value + "\n";
-            });
+             //Loop through all dropdown filters
+             //Does not include make, model, price, year
+             dropdowns.forEach(dropdown => {
+                 const filterCategory = dropdown.id.replace('drop-', '')
+                 const checkedFilters = dropdown.querySelectorAll('input[id^="filter-"]:checked');
 
-            console.log(s)
-        })
+                 if (checkedFilters.length > 0) {
+                     filters[filterCategory] =
+                         Array.from(checkedFilters).map(checkbox => checkbox.value);
+                 }
+             })
+
+
+             //Manual filters
+             //const makeFilter1 = document.getElementById('make')
+
+
+             const modelFilterValue = document.getElementById('model').value
+            if(modelFilterValue) filters["model"] = modelFilterValue;
+
+             //const typeFilter = document.getElementById('vehicleType')
+             const priceFilterMinValue = document.getElementById('minPrice').value
+
+             const priceFilterMaxValue = document.getElementById('maxPrice').value
+        //I forgot to add these two
+            //const minYearValue = document.getElementById('minYear').value
+            //const maxYearValue = document.getElementById('maxYear').value
+            if(priceFilterMinValue){
+                filters["minPrice"] = priceFilterMinValue
+            }
+            if(priceFilterMaxValue){
+                filters["maxPrice"] = priceFilterMaxValue;
+            }
+            console.log(filters)
+         })
+
+
+    //     //Drop down filters
+    // const filterCheckboxes1 = document.querySelectorAll('input[id^="filter-"]');
+    //
+    // //let s = ""
+    //
+    // const applyFilterBtn = document.getElementById('applyFilters')
+    // applyFilterBtn.addEventListener('click', async () => {
+    //
+    //         //Manual filters
+    //
+    //
+    //         if (makeFilter1.value) {
+    //             filters.make.push(makeFilter1.value);
+    //         }
+    //
+    //         if (modelFilter1.value) {
+    //             filters.model = modelFilter1.value;
+    //         }
+    //
+    //         //TODO add input checks
+    //         if (priceFilterMin1.value) {
+    //             filters.minPrice = parseInt(priceFilterMin1.value);
+    //         }
+    //         if (priceFilterMax1.value) {
+    //             filters.maxPrice = parseInt(priceFilterMax1.value);
+    //         }
+    //
+    //         //Print
+    //         // s += "Make: " + makeFilter1.value + "\n";
+    //         // s += "Model:" + modelFilter1.innerText;
+    //         // s += "Price range: " + priceFilterMin1.value + "-" + priceFilterMax1.value + "\n";
+    //
+    //
+    //         //Checkbox filters
+    //         filterCheckboxes1.forEach(checkBox => {
+    //
+    //
+    //             //Print
+    //           // if(checkBox.checked) s += checkBox.value + "\n";
+    //
+    //         });
+    //
+    //        // console.log(s)
+    //     })
+
 
 </script>
 

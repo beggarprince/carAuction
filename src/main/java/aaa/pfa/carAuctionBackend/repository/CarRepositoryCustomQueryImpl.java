@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public class CarRepositoryCustomImpl implements CarRepositoryCustomQuery{
+
+public class CarRepositoryCustomQueryImpl implements CarRepositoryCustomQuery{
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -17,4 +17,5 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustomQuery{
     public List<Car> findByDynamicQuery(String query) {
         return entityManager.createNativeQuery(query, Car.class).getResultList();
     }
+
 }

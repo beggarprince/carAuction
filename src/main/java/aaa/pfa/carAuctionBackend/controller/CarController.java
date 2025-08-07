@@ -197,7 +197,8 @@ public class CarController {
         String query = carService.FilteredListQuery(body);
 
         //TODO test this i fucking hate jpa
-        List<Car> listOfCars = carRepository.findByCustomQuery(query);
+        List<Car> listOfCars = carRepository.findByDynamicQuery(query);
+                //carRepository.findByCustomQuery(query);
 
 
         return ResponseEntity.ok().build();

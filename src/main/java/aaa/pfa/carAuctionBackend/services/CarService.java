@@ -10,7 +10,6 @@ import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -95,7 +94,7 @@ public class CarService {
 
         addFilter(sql, params, "category", filters.categories());
 
-        addFilter(sql, params, "make", filters.makes());
+        addFilter(sql, params, "make", filters.make());
 
         //Model is text, not predefined
 
@@ -104,12 +103,12 @@ public class CarService {
             params.add("%" + filters.model().trim() + "%");
         }
 
-        addFilter(sql, params, "transmission", filters.transmissions());
-        addFilter(sql, params, "drive_type", filters.drives());
-        addFilter(sql, params, "fuel_type", filters.fuels());
-        addFilter(sql, params, "title_status", filters.titleStatuses());
-        addFilter(sql, params, "paint_color", filters.paintColors());
-        addFilter(sql, params, "condition_status", filters.conditions());
+        addFilter(sql, params, "transmission", filters.transmission());
+        addFilter(sql, params, "drive_type", filters.drive());
+        addFilter(sql, params, "fuel_type", filters.fuel());
+        addFilter(sql, params, "title_status", filters.titleStatus());
+        addFilter(sql, params, "paint_color", filters.paintColor());
+        addFilter(sql, params, "condition_status", filters.carCondition());
 
         // Add price range filters
         if (filters.minPrice() != null) {

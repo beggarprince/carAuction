@@ -4,14 +4,14 @@ import java.util.List;
 
 public record CarFilterDTO(
         List<String> categories,
-        List<String> makes,
+        List<String> make,
         String model, // This is text, check this
-        List<String> transmissions,
-        List<String> drives,
-        List<String> fuels,
-        List<String> titleStatuses,
-        List<String> paintColors,
-        List<String> conditions,
+        List<String> transmission,
+        List<String> drive,
+        List<String> fuel,
+        List<String> titleStatus,
+        List<String> paintColor,
+        List<String> carCondition,
 
         // Price range filters (optional)
         Integer minPrice,

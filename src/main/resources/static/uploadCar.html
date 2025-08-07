@@ -251,6 +251,7 @@
         </div>
     </div>
 </div>
+
 <!-- Main Container -->
 <div class="main-container">
     <h1>Post Your Car Listing</h1>
@@ -496,6 +497,7 @@
         const id = localStorage.getItem("id")
 
         if(id===null){
+            //TODO add a redirect or link
             console.log("Id is null please sign in")
             response.textContent = "Please sign in first";
             response.style.color = 'red';
@@ -509,7 +511,7 @@
             year: document.getElementById("year").value,
             price: document.getElementById("price").value,
             mileage: document.getElementById("mileage").value,
-            <!--The user needs to be passed, it's not an element in the html -->
+            //TODO pass jwt token instead
             id: localStorage.getItem("id"),
             //Optional fields
             //ownerUsername:  localStorage.getItem("username"),
