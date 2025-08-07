@@ -100,7 +100,7 @@ public class CarService {
 
         if(filters.model() != null && !filters.model().trim().isEmpty()){
             sql.append(" AND model LIKE ?");
-            params.add("%" + filters.model().trim() + "%");
+            params.add( filters.model().trim() );
         }
 
         addFilter(sql, params, "transmission", filters.transmission());
@@ -136,7 +136,25 @@ public class CarService {
             params.add(filters.maxMileage());
         }
 
+
+        for(int i = 0; i < params.size(); i++){
+            System.out.println("Replacing parameter: " +params.get(i).toString());
+            int index = sql.indexOf("?");
+            if(index != -1){
+                //numero
+                if(params.get(i) instanceof Number){
+                    sql.replace(index, index + 1,  params.get(i).toString() );
+
+                }
+                else {
+                    sql.replace(index, index + 1, "'" + params.get(i).toString() + "'");
+                }
+            }
+        }
+
         sql.append(" ORDER BY created_at DESC");
+
+        System.out.println(sql.toString());
 
         return sql.toString();
 

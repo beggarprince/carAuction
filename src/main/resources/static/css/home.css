@@ -219,6 +219,7 @@ footer {
     .main-container {
         flex-direction: row;
         padding: 10px;
+        width: 100%
     }
 
 

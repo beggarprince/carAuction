@@ -71,6 +71,7 @@
 
 
         <!--Price filtering -->
+
         <div class="sidebar-section">
             <h3>Price</h3>
             <label for="minPrice"></label>
@@ -627,65 +628,31 @@
 
              //const typeFilter = document.getElementById('vehicleType')
              const priceFilterMinValue = document.getElementById('minPrice').value
-
              const priceFilterMaxValue = document.getElementById('maxPrice').value
-        //I forgot to add these two
-            //const minYearValue = document.getElementById('minYear').value
-            //const maxYearValue = document.getElementById('maxYear').value
+
             if(priceFilterMinValue){
                 filters["minPrice"] = priceFilterMinValue
             }
             if(priceFilterMaxValue){
                 filters["maxPrice"] = priceFilterMaxValue;
             }
-            console.log(filters)
+	    const filterString = JSON.stringify(filters, null, 2);
+            console.log(filterString)
+            //We'll send to the controller which will just return ok afaik
+            try{
+                const response = await fetch('cars/advQuery', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify(filters)
+                })
+
+
+            }catch(e){
+
+            }
+
          })
 
-
-    //     //Drop down filters
-    // const filterCheckboxes1 = document.querySelectorAll('input[id^="filter-"]');
-    //
-    // //let s = ""
-    //
-    // const applyFilterBtn = document.getElementById('applyFilters')
-    // applyFilterBtn.addEventListener('click', async () => {
-    //
-    //         //Manual filters
-    //
-    //
-    //         if (makeFilter1.value) {
-    //             filters.make.push(makeFilter1.value);
-    //         }
-    //
-    //         if (modelFilter1.value) {
-    //             filters.model = modelFilter1.value;
-    //         }
-    //
-    //         //TODO add input checks
-    //         if (priceFilterMin1.value) {
-    //             filters.minPrice = parseInt(priceFilterMin1.value);
-    //         }
-    //         if (priceFilterMax1.value) {
-    //             filters.maxPrice = parseInt(priceFilterMax1.value);
-    //         }
-    //
-    //         //Print
-    //         // s += "Make: " + makeFilter1.value + "\n";
-    //         // s += "Model:" + modelFilter1.innerText;
-    //         // s += "Price range: " + priceFilterMin1.value + "-" + priceFilterMax1.value + "\n";
-    //
-    //
-    //         //Checkbox filters
-    //         filterCheckboxes1.forEach(checkBox => {
-    //
-    //
-    //             //Print
-    //           // if(checkBox.checked) s += checkBox.value + "\n";
-    //
-    //         });
-    //
-    //        // console.log(s)
-    //     })
 
 
 </script>

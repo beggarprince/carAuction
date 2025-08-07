@@ -188,21 +188,88 @@ public class CarController {
     }
 
 
-    //Advanced query
+    //Dynamic query
     @PostMapping("/cars/advQuery")
     public ResponseEntity<List<CarDTO>> getCarsAdv(
             @Valid
             @RequestBody CarFilterDTO body
     ) {
+
+        CarFilterDTO.validate(body);
+        printCarFilterDTO(body);
+
         String query = carService.FilteredListQuery(body);
 
-        //TODO test this i fucking hate jpa
-        List<Car> listOfCars = carRepository.findByDynamicQuery(query);
+        System.out.println(query);
+        //List<Car> listOfCars = carRepository.findByDynamicQuery(query);
                 //carRepository.findByCustomQuery(query);
 
 
         return ResponseEntity.ok().build();
     }
+
+    private void printCarFilterDTO(CarFilterDTO filter) {
+        System.out.println("=== CarFilterDTO Values ===");
+
+        if (filter.categories() != null && !filter.categories().isEmpty()) {
+            System.out.println("Categories: " + filter.categories());
+        }
+
+        if (filter.make() != null && !filter.make().isEmpty()) {
+            System.out.println("Make: " + filter.make());
+        }
+
+        if (filter.model() != null && !filter.model().trim().isEmpty()) {
+            System.out.println("Model: " + filter.model());
+        }
+
+        if (filter.transmission() != null && !filter.transmission().isEmpty()) {
+            System.out.println("Transmission: " + filter.transmission());
+        }
+
+        if (filter.drive() != null && !filter.drive().isEmpty()) {
+            System.out.println("Drive: " + filter.drive());
+        }
+
+        if (filter.fuel() != null && !filter.fuel().isEmpty()) {
+            System.out.println("Fuel: " + filter.fuel());
+        }
+
+        if (filter.titleStatus() != null && !filter.titleStatus().isEmpty()) {
+            System.out.println("Title Status: " + filter.titleStatus());
+        }
+
+        if (filter.paintColor() != null && !filter.paintColor().isEmpty()) {
+            System.out.println("Paint Color: " + filter.paintColor());
+        }
+
+        if (filter.carCondition() != null && !filter.carCondition().isEmpty()) {
+            System.out.println("Car Condition: " + filter.carCondition());
+        }
+
+        if (filter.minPrice() != null) {
+            System.out.println("Min Price: " + filter.minPrice());
+        }
+
+        if (filter.maxPrice() != null) {
+            System.out.println("Max Price: " + filter.maxPrice());
+        }
+
+        if (filter.minYear() != null) {
+            System.out.println("Min Year: " + filter.minYear());
+        }
+
+        if (filter.maxYear() != null) {
+            System.out.println("Max Year: " + filter.maxYear());
+        }
+
+        if (filter.maxMileage() != null) {
+            System.out.println("Max Mileage: " + filter.maxMileage());
+        }
+
+        System.out.println("========================");
+    }
+
 
 
 }

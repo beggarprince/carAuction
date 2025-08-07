@@ -1,11 +1,14 @@
 package aaa.pfa.carAuctionBackend.DTO;
 
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.util.List;
 
 public record CarFilterDTO(
         List<String> categories,
         List<String> make,
-        String model, // This is text, check this
+        String model,
         List<String> transmission,
         List<String> drive,
         List<String> fuel,
@@ -13,15 +16,40 @@ public record CarFilterDTO(
         List<String> paintColor,
         List<String> carCondition,
 
-        // Price range filters (optional)
         Integer minPrice,
         Integer maxPrice,
 
-        // Year range filters (optional)
         Integer minYear,
         Integer maxYear,
 
-        // Mileage range filters (optional)
         Integer maxMileage
 ) {
+
+    public static void validate(CarFilterDTO dto) {
+        validateAlphanumeric(dto.model(), "model");
+        validateAlphanumericList(dto.categories(), "categories");
+        validateAlphanumericList(dto.make(), "make");
+        validateAlphanumericList(dto.transmission(), "transmission");
+        validateAlphanumericList(dto.drive(), "drive");
+        validateAlphanumericList(dto.fuel(), "fuel");
+        validateAlphanumericList(dto.titleStatus(), "titleStatus");
+        validateAlphanumericList(dto.paintColor(), "paintColor");
+        validateAlphanumericList(dto.carCondition(), "carCondition");
+        System.out.println("Strings are alphanumeric");
+    }
+
+    private static void validateAlphanumeric(String value, String fieldName) {
+        if(value == null) return;
+        if ( !value.matches("^[a-zA-Z0-9]*\\s?[a-zA-Z0-9]*$")) {
+            throw new IllegalArgumentException(fieldName + " contains invalid characters " + value);
+        }
+    }
+
+    private static void validateAlphanumericList(List<String> values, String fieldName) {
+        if (values != null) {
+            for (String value : values) {
+                validateAlphanumeric(value, fieldName);
+            }
+        }
+    }
 }
