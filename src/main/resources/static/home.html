@@ -83,7 +83,7 @@
 
         <div class="sidebar-section">
             <h3>Categories</h3>
-            <ul style="padding: 4px" id="drop-categories">
+            <ul style="padding: 4px" id="drop-carType">
                 <li><input type="checkbox" id="filter-convertible" name="category" value="convertible">
                     <label for="filter-convertible">Convertibles</label></li>
                 <li><input type="checkbox" id="filter-coupe" name="category" value="coupe">
@@ -104,7 +104,7 @@
         <!-- make and model -->
         <div class="sidebar-section">
             <h3>Make and Model</h3>
-            <div class="form-group">
+            <div class="form-group" >
                 <label for="make">Make
                 </label>
                 <select id="make" name="make" required>
@@ -583,7 +583,7 @@
     //json
     // Initialize collections for each filter type
     const filters = {
-        categories: [],
+        carType: [],
         make: [],
         model: null,
         transmission: [],
@@ -609,7 +609,7 @@
              //Loop through all dropdown filters
              //Does not include make, model, price, year
              dropdowns.forEach(dropdown => {
-                 const filterCategory = dropdown.id.replace('drop-', '')
+                 let filterCategory = dropdown.id.replace('drop-', '')
                  const checkedFilters = dropdown.querySelectorAll('input[id^="filter-"]:checked');
 
                  if (checkedFilters.length > 0) {
@@ -618,13 +618,18 @@
                  }
              })
 
+            const modelFilterValue = document.getElementById('model').value
+            const makeFilterValue = document.getElementById('make')
 
-             //Manual filters
-             //const makeFilter1 = document.getElementById('make')
+            if(makeFilterValue) {
+                let fuckJson = []
+                fuckJson.push(makeFilterValue.value)
+                filters["make"] = fuckJson;
+            }
 
-
-             const modelFilterValue = document.getElementById('model').value
             if(modelFilterValue) filters["model"] = modelFilterValue;
+
+
 
              //const typeFilter = document.getElementById('vehicleType')
              const priceFilterMinValue = document.getElementById('minPrice').value
@@ -645,8 +650,9 @@
                     headers: { 'Content-Type': 'application/json'},
                     body: JSON.stringify(filters)
                 })
-
-
+                if(!response.ok) throw new Error('Error filtering')
+                const r = await response.json()
+                console.log(r)
             }catch(e){
 
             }

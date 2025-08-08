@@ -78,13 +78,6 @@ const dataFetcher = {
         },
 
         async fetchAllData() {
-            //
-            // const results = await Promise.allSettled([
-            //     this.fetchCars(),
-            //     this.fetchUsers(),
-            //     this.fetchHomeData(),
-            //     this.fetchCurrentUser()
-            // ]);
 
             console.log('All data fetched:', appData);
             this.displayAllData();

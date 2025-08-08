@@ -92,7 +92,7 @@ public class CarService {
 
         //category, make, model
 
-        addFilter(sql, params, "category", filters.categories());
+        addFilter(sql, params, "category", filters.carType());
 
         addFilter(sql, params, "make", filters.make());
 
@@ -104,11 +104,11 @@ public class CarService {
         }
 
         addFilter(sql, params, "transmission", filters.transmission());
-        addFilter(sql, params, "drive_type", filters.drive());
-        addFilter(sql, params, "fuel_type", filters.fuel());
-        addFilter(sql, params, "title_status", filters.titleStatus());
-        addFilter(sql, params, "paint_color", filters.paintColor());
-        addFilter(sql, params, "condition_status", filters.carCondition());
+        addFilter(sql, params, "drive", filters.drive());
+        addFilter(sql, params, "fuel", filters.fuel());
+        addFilter(sql, params, "title", filters.titleStatus());
+        addFilter(sql, params, "color", filters.paintColor());
+        addFilter(sql, params, "car_condition", filters.carCondition());
 
         // Add price range filters
         if (filters.minPrice() != null) {
@@ -152,7 +152,7 @@ public class CarService {
             }
         }
 
-        sql.append(" ORDER BY created_at DESC");
+        sql.append(" ORDER BY date_posted DESC");
 
         System.out.println(sql.toString());
 
@@ -167,6 +167,7 @@ public class CarService {
             List<String> values
     ){
         if( values != null && !values.isEmpty()){
+
             sql.append(" AND ").append(columnName).append(" IN (");
 
                 for(int i = 0; i < values.size(); i++){

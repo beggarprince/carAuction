@@ -1,12 +1,9 @@
 package aaa.pfa.carAuctionBackend.DTO;
 
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-
 import java.util.List;
 
 public record CarFilterDTO(
-        List<String> categories,
+        List<String> carType,
         List<String> make,
         String model,
         List<String> transmission,
@@ -27,7 +24,7 @@ public record CarFilterDTO(
 
     public static void validate(CarFilterDTO dto) {
         validateAlphanumeric(dto.model(), "model");
-        validateAlphanumericList(dto.categories(), "categories");
+        validateAlphanumericList(dto.carType(), "carType");
         validateAlphanumericList(dto.make(), "make");
         validateAlphanumericList(dto.transmission(), "transmission");
         validateAlphanumericList(dto.drive(), "drive");

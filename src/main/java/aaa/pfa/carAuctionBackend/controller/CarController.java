@@ -201,18 +201,38 @@ public class CarController {
         String query = carService.FilteredListQuery(body);
 
         System.out.println(query);
-        //List<Car> listOfCars = carRepository.findByDynamicQuery(query);
+        List<Car> retrievedCars = carRepository.findByDynamicQuery(query);
                 //carRepository.findByCustomQuery(query);
 
+        List<CarDTO> cars = new ArrayList<>();
 
-        return ResponseEntity.ok().build();
+        //TODO i should def add more to th dto
+        for(Car car: retrievedCars){
+            CarDTO carDTO = new CarDTO(
+                    car.getId(),
+                    car.getMake(),
+                    car.getModel(),
+                    car.getYear(),
+                    car.getMileage(),
+                    car.getPrice(),
+                    car.getDatePosted().toString(),
+                    car.getUser().username,
+                    car.getUser().id,
+                    car.getPicturesURL(),
+                    car.getDescription()
+            );
+            cars.add(carDTO);
+        }
+
+
+        return ResponseEntity.ok(cars);
     }
 
     private void printCarFilterDTO(CarFilterDTO filter) {
         System.out.println("=== CarFilterDTO Values ===");
 
-        if (filter.categories() != null && !filter.categories().isEmpty()) {
-            System.out.println("Categories: " + filter.categories());
+        if (filter.carType() != null && !filter.carType().isEmpty()) {
+            System.out.println("Categories: " + filter.carType());
         }
 
         if (filter.make() != null && !filter.make().isEmpty()) {
