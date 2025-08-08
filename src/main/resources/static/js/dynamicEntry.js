@@ -43,9 +43,9 @@ async function dynamicEntry(){
         const makeFilterValue = document.getElementById('make')
 
         if(makeFilterValue) {
-            let fuckJson = []
-            fuckJson.push(makeFilterValue.value)
-            filters["make"] = fuckJson;
+            let carMakes = []
+            carMakes.push(makeFilterValue.value)
+            filters["make"] = carMakes;
         }
 
         if(modelFilterValue) filters["model"] = modelFilterValue;
@@ -71,13 +71,22 @@ async function dynamicEntry(){
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify(filters)
             })
-            if(!response.ok) throw new Error('Error filtering')
+            if(!response.ok){
+	    	throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+	    }
             const r = await response.json()
 
-            // console.log(r)
             appData.cars = r;
         }catch(e){
-
+		if(e instanceof TypeError){
+			console.error('Network error:', e,message);
+		}
+		else if(e.message.includes('HTTP')) {
+			console.error('Server error:', e.message);
+		}
+		else{
+			console.error('Unexpected error:', e.message);
+		}
         }
 
     //})
