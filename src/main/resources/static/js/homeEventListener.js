@@ -25,3 +25,7 @@ document.getElementById('showCarGrid').addEventListener('click', async() =>{
     await dataFetcher.displayAllAsCards();
     await equalizeGridHeights();
 });
+
+document.getElementById('applyFilters').addEventListener('click', async() =>{
+    await dynamicEntry();
+})
