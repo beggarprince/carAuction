@@ -74,3 +74,68 @@ document.getElementById('showCarGrid').addEventListener('click', async() =>{
          //await equalizeGridHeights();
 
     })
+
+
+//misc functions for ui
+//TODO some of these functions ought to be put in home.js, since some of the above could be reused
+
+    function toggleCollapsible(header) {
+        const parent = header;
+
+        const arrow = header.querySelector('.collapsible-arrow');
+        const content = header.nextElementSibling;
+
+        // Toggle the expanded class
+        arrow.classList.toggle('expanded');
+        content.classList.toggle('expanded');
+
+        //Signify the drop box has been clicked
+        parent.classList.toggle('expanded')
+    }
+
+    // Reset drop down filters to unchecked
+    const filterCheckboxes = document.querySelectorAll('input[id^="filter-"]');
+    const resetFilterButton = document.getElementById('clearFilters')
+
+    //Manual filters
+    const makeFilter = document.getElementById('make')
+    const modelFilter = document.getElementById('model')
+    //const typeFilter = document.getElementById('vehicleType')
+    const priceFilterMin = document.getElementById(
+    'minPrice'
+    )
+    const priceFilterMax = document.getElementById('maxPrice')
+
+    resetFilterButton.addEventListener('click', async() =>{
+
+    filterCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    //Reset the other filters
+    makeFilter.value ="";
+    modelFilter.value = ""
+    //typeFilter.value=""
+    priceFilterMax.value=""
+    priceFilterMin.value =""
+})
+
+    //Hide all drop down filters
+    //Reset? i can call the fun later i guess
+    const boxes = document.querySelectorAll('div[id^="drop-"]');
+
+    const hideDropButton = document.getElementById('collapseFilters')
+
+    hideDropButton.addEventListener('click', async () =>{
+    boxes.forEach( box =>{
+            const header = box.querySelector('.collapsible-header')
+            const arrow = box.querySelector('.collapsible-arrow')
+            const content = box.querySelector('.collapsible-content')
+
+            header.classList.remove('expanded');
+            arrow.classList.remove('expanded');
+            content.classList.remove('expanded')
+        }
+    )
+
+})
