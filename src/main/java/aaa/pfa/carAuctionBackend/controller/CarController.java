@@ -21,13 +21,10 @@ import java.util.List;
 public class CarController {
 
     private final CarService carService;
-    private final CarRepository carRepository;
 
     public CarController(
-            CarService carService,
-            CarRepository carRepository) {
+            CarService carService) {
         this.carService = carService;
-        this.carRepository = carRepository;
     }
 
     @GetMapping("/uploadCar")
@@ -43,19 +40,11 @@ public class CarController {
             @Valid
             @RequestBody CarUploadDTO dto
     ){
-
-        Car newCar = carService.registerCar(dto);
-
-        CarUploadResponseDTO body = new CarUploadResponseDTO(
-                newCar.getId(),
-                newCar.getUser().username,
-                newCar.getMake(),
-                newCar.getModel(),
-                newCar.getYear(),
-                newCar.getPrice(),
-                newCar.getDatePosted()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(body);
+        return carService.uploadCar(dto).map( carUploadResponseDTO ->
+                ResponseEntity.ok(carUploadResponseDTO))
+                .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .build()
+                );
     }
 
     @PostMapping("/cars/uploadPhotos")
@@ -64,16 +53,10 @@ public class CarController {
             @RequestBody CarPictureDTO dto
             ){
 
-        System.out.println("At /cars/uploadPhotos");
-        Car car = carRepository.findById(dto.carId()).orElse(null);
-        if(car != null) {
-            car.setPictureURL(dto.ids());
-            carRepository.save(car);
-        }else{
-            System.out.println("Error updating car with pictures");
+        if(carService.uploadCarPics(dto)){
+            return ResponseEntity.ok().build();
         }
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     //Spaghetti
@@ -81,110 +64,9 @@ public class CarController {
     public ResponseEntity<List<CarDTO>> getCars(
             @RequestParam String filter
     ){
-        List<Car> carList = new ArrayList<>();
-
-        if (filter.equals("top5desc")) {
-            carList = carRepository.findTop50ByOrderByDatePostedDesc();
-        }
-        else if(filter.contains("price")) {
-         if (filter.contains("min_Price") && filter.contains("max_Price")) {
-
-                int minPrice = Integer.parseInt(filter.split("min_Price=")[1].split("&")[0]);
-
-                int maxPrice = Integer.parseInt(filter.split("max_Price=")[1]);
-
-                carList = carRepository.findAllByPriceBetween(minPrice, maxPrice);
-            } else if (filter.contains("min_Price")) {
-                int price = Integer.parseInt(filter.split("min_Price=")[1]);
-                carList = carRepository.findAllByPriceIsLessThan((double) price);
-            } else if (filter.contains("maxPrice")) {
-                int price = Integer.parseInt(filter.split("max_Price=")[1]);
-                carList = carRepository.findAllByPriceGreaterThan(price);
-            }
-        }
-
-        //Would probably be better to have lessthan and greaterthan inside the url regardless and check for ""
-        else if(filter.contains("findAllByYear")){
-
-            boolean lessThan = filter.contains("LessThan");
-
-            boolean greaterThan = filter.contains("greaterThan");
-
-            if(lessThan && greaterThan){
-                int minYear = Integer.parseInt(filter.split("LessThan=")[1].split("0")[0]) ;
-                int maxYear = Integer.parseInt(filter.split("GreaterThan=")[1]);
-                carList = carRepository.findAllByYearBetween(minYear, maxYear);
-            }
-
-            else if(lessThan){
-                int minYear = Integer.parseInt(filter.split("LessThan=")[1].split("0")[0]) ;
-                carList = carRepository.findAllByYearLessThan(minYear);
-            }
-
-            else if(greaterThan){
-                int maxYear = Integer.parseInt(filter.split("GreaterThan=")[1]);
-                carList = carRepository.findAllByYearGreaterThan(maxYear);
-            }
-
-            }
-
-        else if(filter.contains("color")){
-            String color = filter.split("color=")[1];
-            carList = carRepository.findAllByColor(color);
-        }
-
-        else if(filter.contains("make")){
-            String make = filter.split("make=")[1];
-            carList = carRepository.findAllByMake(make);
-        }
-
-        else if(filter.contains("mileage")){
-            boolean lessThan = filter.contains("lessThan");
-            boolean greaterThan = filter.contains("greaterThan");
-
-            if(lessThan && greaterThan){
-                int lessThanMileage = Integer.parseInt(filter.split("mileageLessThan=")[1].split("0")[0]);
-                int greaterThanMileage = Integer.parseInt(filter.split("mileageGreaterThan=")[1]);
-                carList = carRepository.findAllByMileageBetween(lessThanMileage, greaterThanMileage);
-            }
-            else if(lessThan){
-                int mileage = Integer.parseInt(filter.split("=")[1]);
-                carList = carRepository.findAllByYearLessThan(mileage);
-            }
-            else if(greaterThan){
-                int mileage = Integer.parseInt(filter.split("=")[1]);
-                carList = carRepository.findAllByMileageGreaterThan(mileage);
-            }
-
-        }
-
-        else {
-            System.out.println("Default case");
-            carList = carRepository.findAll();
-            // n.forEach(carList::add);
-        }
-
-
-        List<CarDTO> carDTOList = new ArrayList<>();
-
-        for(Car car: carList){
-            CarDTO carDTO = new CarDTO(
-                    car.getId(),
-                    car.getMake(),
-                    car.getModel(),
-                    car.getYear(),
-                    car.getMileage(),
-                    car.getPrice(),
-                    car.getDatePosted().toString(),
-                    car.getUser().username,
-                    car.getUser().id,
-                    car.getPicturesURL(),
-                    car.getDescription()
-            );
-            carDTOList.add(carDTO);
-        }
-
-        return ResponseEntity.ok(carDTOList);
+        List<CarDTO> list = carService.getCars(filter);
+        if(!list.isEmpty()) return ResponseEntity.ok(list);
+        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
 
 
@@ -194,101 +76,10 @@ public class CarController {
             @Valid
             @RequestBody CarFilterDTO body
     ) {
-
-        CarFilterDTO.validate(body);
-        printCarFilterDTO(body);
-
-        String query = carService.FilteredListQuery(body);
-
-        System.out.println(query);
-        List<Car> retrievedCars = carRepository.findByDynamicQuery(query);
-                //carRepository.findByCustomQuery(query);
-
-        List<CarDTO> cars = new ArrayList<>();
-
-        //TODO i should def add more to th dto
-        for(Car car: retrievedCars){
-            CarDTO carDTO = new CarDTO(
-                    car.getId(),
-                    car.getMake(),
-                    car.getModel(),
-                    car.getYear(),
-                    car.getMileage(),
-                    car.getPrice(),
-                    car.getDatePosted().toString(),
-                    car.getUser().username,
-                    car.getUser().id,
-                    car.getPicturesURL(),
-                    car.getDescription()
-            );
-            cars.add(carDTO);
-        }
-
-
+        List<CarDTO> cars = carService.dynamicQuery(body);
         return ResponseEntity.ok(cars);
     }
 
-    private void printCarFilterDTO(CarFilterDTO filter) {
-        System.out.println("=== CarFilterDTO Values ===");
-
-        if (filter.carType() != null && !filter.carType().isEmpty()) {
-            System.out.println("Categories: " + filter.carType());
-        }
-
-        if (filter.make() != null && !filter.make().isEmpty()) {
-            System.out.println("Make: " + filter.make());
-        }
-
-        if (filter.model() != null && !filter.model().trim().isEmpty()) {
-            System.out.println("Model: " + filter.model());
-        }
-
-        if (filter.transmission() != null && !filter.transmission().isEmpty()) {
-            System.out.println("Transmission: " + filter.transmission());
-        }
-
-        if (filter.drive() != null && !filter.drive().isEmpty()) {
-            System.out.println("Drive: " + filter.drive());
-        }
-
-        if (filter.fuel() != null && !filter.fuel().isEmpty()) {
-            System.out.println("Fuel: " + filter.fuel());
-        }
-
-        if (filter.titleStatus() != null && !filter.titleStatus().isEmpty()) {
-            System.out.println("Title Status: " + filter.titleStatus());
-        }
-
-        if (filter.paintColor() != null && !filter.paintColor().isEmpty()) {
-            System.out.println("Paint Color: " + filter.paintColor());
-        }
-
-        if (filter.carCondition() != null && !filter.carCondition().isEmpty()) {
-            System.out.println("Car Condition: " + filter.carCondition());
-        }
-
-        if (filter.minPrice() != null) {
-            System.out.println("Min Price: " + filter.minPrice());
-        }
-
-        if (filter.maxPrice() != null) {
-            System.out.println("Max Price: " + filter.maxPrice());
-        }
-
-        if (filter.minYear() != null) {
-            System.out.println("Min Year: " + filter.minYear());
-        }
-
-        if (filter.maxYear() != null) {
-            System.out.println("Max Year: " + filter.maxYear());
-        }
-
-        if (filter.maxMileage() != null) {
-            System.out.println("Max Mileage: " + filter.maxMileage());
-        }
-
-        System.out.println("========================");
-    }
 
 
 

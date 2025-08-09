@@ -5,6 +5,7 @@ import aaa.pfa.carAuctionBackend.DTO.MultipleProductImageDTO;
 import aaa.pfa.carAuctionBackend.DTO.ProductImageDTO;
 import aaa.pfa.carAuctionBackend.model.ProductPicture;
 import aaa.pfa.carAuctionBackend.repository.ProductPictureRepository;
+import aaa.pfa.carAuctionBackend.services.MongoDbImageService;
 import jakarta.validation.Valid;
 import org.bson.types.Binary;
 import org.springframework.http.HttpStatus;
@@ -24,10 +25,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/images")
 public class MongoDbImageController {
-    private final ProductPictureRepository productPictureRepository;
 
-    public MongoDbImageController(ProductPictureRepository productPictureRepository) {
-        this.productPictureRepository = productPictureRepository;
+    private final MongoDbImageService mongoDbImageService;
+    public MongoDbImageController(MongoDbImageService mongoDbImageService) {
+        this.mongoDbImageService = mongoDbImageService;
     }
 
     @GetMapping("/upload")
@@ -40,21 +41,18 @@ public class MongoDbImageController {
             @RequestParam("file") MultipartFile file,
             @RequestParam("owner") String owner
     )    throws IOException {
-        ProductPicture productPicture =
-        productPictureRepository.save(new ProductPicture(owner,
-                new Binary(file.getBytes())));
 
-        return ResponseEntity.ok(new ProductImageDTO(productPicture.getId(),
-                productPicture.getOwner()));
+        return ResponseEntity.ok(
+                mongoDbImageService.uploadImageToMongo(file, owner)
+        );
     }
 
     @GetMapping(value ="/{id}", produces= MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> getImage(
             @PathVariable("id") String id){
-        ProductPicture img = productPictureRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        byte[] data = img.getImageData().getData();
+        byte[] data = mongoDbImageService.getImage(id);
+
         return ResponseEntity.ok()
                 .body(data);
     }
@@ -66,24 +64,10 @@ public class MongoDbImageController {
             @RequestParam("owner") String owner
             ) throws IOException{
 
-        System.out.println("At /api/images/multiple");
-
-        if (files.size() > 6) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot upload more than 6 images.");
-        }
-
-        List<String> ids = new ArrayList<>();
-
-        for(MultipartFile f: files){
-            ProductPicture p = new ProductPicture(
-                    owner,
-                    new Binary(f.getBytes())
-            );
-            ProductPicture saved = productPictureRepository.save(p);
-            ids.add(saved.getId());
-        }
-
-        return ResponseEntity.ok(Collections.singletonMap("ids", ids));
+        return ResponseEntity.ok(Collections.singletonMap(
+                "ids",
+                mongoDbImageService.uploadMultiplePics(files, owner)
+                ));
     }
 
 }

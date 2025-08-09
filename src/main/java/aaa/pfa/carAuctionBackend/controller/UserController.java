@@ -63,7 +63,8 @@ public class UserController {
     @GetMapping("/api/user/getUser={username}")
     public ResponseEntity<UserDTO> getSpecificUser(
             @PathVariable String username) {
-               return  userService.getByUsername(username).map(userDTO ->
+               return  userService.getByUsername(username)
+                       .map(userDTO ->
                                ResponseEntity.ok(userDTO))
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -1,8 +1,7 @@
 package aaa.pfa.carAuctionBackend.services;
 
 
-import aaa.pfa.carAuctionBackend.DTO.CarFilterDTO;
-import aaa.pfa.carAuctionBackend.DTO.CarUploadDTO;
+import aaa.pfa.carAuctionBackend.DTO.*;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.CarRepository;
@@ -10,6 +9,7 @@ import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,24 +36,6 @@ public class CarService {
         User user = optionalUser.orElseThrow(() ->
                 new EntityNotFoundException("User not found with ID: " + dto.id()));
 
-        System.out.println("User id is:" + user.id);
-
-//        Car car = new Car.Builder(
-//                dto.make(),
-//                dto.model(),
-//                dto.year(),
-//                dto.mileage(),
-//                dto.price(),
-//                user).transmission(dto.transmission())
-//                .drive(dto.drive())
-//                .fuel(dto.fuel())
-//                .carType(dto.carType())
-//                .title(dto.title())
-//                .cylinder(dto.cylinder())
-//                .color(dto.color())
-//                .carCondition(dto.carCondition())
-//                .description(dto.description())
-//                .build();
             Car car =  makeCar(user, dto);
 
         user.addCarToUser(car);
@@ -62,7 +44,8 @@ public class CarService {
     }
 
     public Car makeCar(User user, CarUploadDTO dto){
-        Car car = new Car.Builder(
+
+        return new Car.Builder(
                 dto.make(),
                 dto.model(),
                 dto.year(),
@@ -78,8 +61,6 @@ public class CarService {
                 .carCondition(dto.carCondition())
                 .description(dto.description())
                 .build();
-
-        return car;
     }
 
 
@@ -183,5 +164,240 @@ public class CarService {
                 sql.append(")");
         }
     }
+
+    @Transactional
+    public Optional<CarUploadResponseDTO> uploadCar(
+            CarUploadDTO dto
+    ){
+        Car car = registerCar(dto);
+
+        return Optional.of(createCarUploadResponseDTO(car));
+    }
+
+    private CarUploadResponseDTO createCarUploadResponseDTO(
+            Car car
+    ) {
+        return new CarUploadResponseDTO(
+                car.getId(),
+                car.getUser().username,
+                car.getMake(),
+                car.getModel(),
+                car.getYear(),
+                car.getPrice(),
+                car.getDatePosted()
+        );
+    }
+
+    public Boolean uploadCarPics(CarPictureDTO dto){
+
+        //Get car
+        Car car = carRepository.findById(dto.carId()).orElse(null);
+
+        if(car != null) {
+            car.setPictureURL(dto.ids());
+            carRepository.save(car);
+            return true;
+        }
+
+        return false;
+    }
+
+    public List<CarDTO> getCars(String filter){
+        List<Car> carList = new ArrayList<>();
+
+        if (filter.equals("top5desc")) {
+            carList = carRepository.findTop50ByOrderByDatePostedDesc();
+        }
+        else if(filter.contains("price")) {
+            if (filter.contains("min_Price") && filter.contains("max_Price")) {
+
+                int minPrice = Integer.parseInt(filter.split("min_Price=")[1].split("&")[0]);
+
+                int maxPrice = Integer.parseInt(filter.split("max_Price=")[1]);
+
+                carList = carRepository.findAllByPriceBetween(minPrice, maxPrice);
+            } else if (filter.contains("min_Price")) {
+                int price = Integer.parseInt(filter.split("min_Price=")[1]);
+                carList = carRepository.findAllByPriceIsLessThan((double) price);
+            } else if (filter.contains("maxPrice")) {
+                int price = Integer.parseInt(filter.split("max_Price=")[1]);
+                carList = carRepository.findAllByPriceGreaterThan(price);
+            }
+        }
+
+        //Would probably be better to have lessthan and greaterthan inside the url regardless and check for ""
+        else if(filter.contains("findAllByYear")){
+
+            boolean lessThan = filter.contains("LessThan");
+
+            boolean greaterThan = filter.contains("greaterThan");
+
+            if(lessThan && greaterThan){
+                int minYear = Integer.parseInt(filter.split("LessThan=")[1].split("0")[0]) ;
+                int maxYear = Integer.parseInt(filter.split("GreaterThan=")[1]);
+                carList = carRepository.findAllByYearBetween(minYear, maxYear);
+            }
+
+            else if(lessThan){
+                int minYear = Integer.parseInt(filter.split("LessThan=")[1].split("0")[0]) ;
+                carList = carRepository.findAllByYearLessThan(minYear);
+            }
+
+            else if(greaterThan){
+                int maxYear = Integer.parseInt(filter.split("GreaterThan=")[1]);
+                carList = carRepository.findAllByYearGreaterThan(maxYear);
+            }
+
+        }
+
+        else if(filter.contains("color")){
+            String color = filter.split("color=")[1];
+            carList = carRepository.findAllByColor(color);
+        }
+
+        else if(filter.contains("make")){
+            String make = filter.split("make=")[1];
+            carList = carRepository.findAllByMake(make);
+        }
+
+        else if(filter.contains("mileage")){
+            boolean lessThan = filter.contains("lessThan");
+            boolean greaterThan = filter.contains("greaterThan");
+
+            if(lessThan && greaterThan){
+                int lessThanMileage = Integer.parseInt(filter.split("mileageLessThan=")[1].split("0")[0]);
+                int greaterThanMileage = Integer.parseInt(filter.split("mileageGreaterThan=")[1]);
+                carList = carRepository.findAllByMileageBetween(lessThanMileage, greaterThanMileage);
+            }
+            else if(lessThan){
+                int mileage = Integer.parseInt(filter.split("=")[1]);
+                carList = carRepository.findAllByYearLessThan(mileage);
+            }
+            else if(greaterThan){
+                int mileage = Integer.parseInt(filter.split("=")[1]);
+                carList = carRepository.findAllByMileageGreaterThan(mileage);
+            }
+
+        }
+
+        else {
+            System.out.println("Default case");
+            carList = carRepository.findAll();
+            // n.forEach(carList::add);
+        }
+
+
+        List<CarDTO> carDTOList = new ArrayList<>();
+
+        for(Car car: carList){
+            CarDTO carDTO = createCarDTO(car);
+            carDTOList.add(carDTO);
+        }
+
+        return carDTOList;
+    }
+
+    private static CarDTO createCarDTO(Car car) {
+        return new CarDTO(
+                car.getId(),
+                car.getMake(),
+                car.getModel(),
+                car.getYear(),
+                car.getMileage(),
+                car.getPrice(),
+                car.getDatePosted().toString(),
+                car.getUser().username,
+                car.getUser().id,
+                car.getPicturesURL(),
+                car.getDescription()
+        );
+    }
+
+
+    public List<CarDTO> dynamicQuery(
+            CarFilterDTO body
+    ){
+
+        String query = FilteredListQuery(body);
+        CarFilterDTO.validate(body);
+
+        printCarFilterDTO(body);
+
+
+        System.out.println(query);
+        List<Car> retrievedCars = carRepository.findByDynamicQuery(query);
+        //carRepository.findByCustomQuery(query);
+
+        List<CarDTO> cars = new ArrayList<>();
+
+        for(Car car: retrievedCars){
+            CarDTO carDTO = createCarDTO(car);
+            cars.add(carDTO);
+        }
+
+        return cars;
+    }
+    private void printCarFilterDTO(CarFilterDTO filter) {
+        System.out.println("=== CarFilterDTO Values ===");
+
+        if (filter.carType() != null && !filter.carType().isEmpty()) {
+            System.out.println("Categories: " + filter.carType());
+        }
+
+        if (filter.make() != null && !filter.make().isEmpty()) {
+            System.out.println("Make: " + filter.make());
+        }
+
+        if (filter.model() != null && !filter.model().trim().isEmpty()) {
+            System.out.println("Model: " + filter.model());
+        }
+
+        if (filter.transmission() != null && !filter.transmission().isEmpty()) {
+            System.out.println("Transmission: " + filter.transmission());
+        }
+
+        if (filter.drive() != null && !filter.drive().isEmpty()) {
+            System.out.println("Drive: " + filter.drive());
+        }
+
+        if (filter.fuel() != null && !filter.fuel().isEmpty()) {
+            System.out.println("Fuel: " + filter.fuel());
+        }
+
+        if (filter.titleStatus() != null && !filter.titleStatus().isEmpty()) {
+            System.out.println("Title Status: " + filter.titleStatus());
+        }
+
+        if (filter.paintColor() != null && !filter.paintColor().isEmpty()) {
+            System.out.println("Paint Color: " + filter.paintColor());
+        }
+
+        if (filter.carCondition() != null && !filter.carCondition().isEmpty()) {
+            System.out.println("Car Condition: " + filter.carCondition());
+        }
+
+        if (filter.minPrice() != null) {
+            System.out.println("Min Price: " + filter.minPrice());
+        }
+
+        if (filter.maxPrice() != null) {
+            System.out.println("Max Price: " + filter.maxPrice());
+        }
+
+        if (filter.minYear() != null) {
+            System.out.println("Min Year: " + filter.minYear());
+        }
+
+        if (filter.maxYear() != null) {
+            System.out.println("Max Year: " + filter.maxYear());
+        }
+
+        if (filter.maxMileage() != null) {
+            System.out.println("Max Mileage: " + filter.maxMileage());
+        }
+
+        System.out.println("========================");
+    }
+
 
 }
