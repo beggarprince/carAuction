@@ -45,9 +45,9 @@ public class UserDetailsServiceService implements
         return builder.build();
     }
 
-    public User returnByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User '%s' not found".formatted(username)));
-    }
+//    public User returnByUsername(String username) {
+//        return userRepository.findByUsername(username)
+//                .orElseThrow(() ->
+//                        new UsernameNotFoundException("User '%s' not found".formatted(username)));
+//    }
 }

@@ -2,6 +2,7 @@
 //	It will get * listings the user owns, display pfp.
 //		Maybe it will even allow changes if the user is you or something with the jwt token
 
+//Using public username, don't expose user id
 async function handleUserPage(){
 	//Get user -> get cars
 	

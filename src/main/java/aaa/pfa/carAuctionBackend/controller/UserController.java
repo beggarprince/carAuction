@@ -14,84 +14,59 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
-    private final UserDetailsServiceService userDetailsServiceService;
 
-    private final UserRepository userRepository;
 
-    public UserController(UserService userService, UserRepository userRepository, UserDetailsServiceService udss)
-    {
+    public UserController(UserService userService) {
         super();
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.userDetailsServiceService = udss;
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<UserDTO> updateUser(
             @PathVariable Long id,
             @RequestBody UserDTO dto
-            ){
-        User updateUser = userService.updateUser(id, dto);
-        return ResponseEntity.ok(updateUser);
+    ) {
+
+        return userService.updateUser(id, dto).map(userDTO -> ResponseEntity.ok(userDTO))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDTO> currentUser( Authentication authentication){
+    public ResponseEntity<UserDTO> currentUser(Authentication authentication) {
 
-        if(authentication == null){
+        if (authentication == null) {
             System.out.println("Authentication is null");
-
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         }
 
-        String username = authentication.getName();
+        return userService.currentUser(authentication).map(userDTO ->
+                        ResponseEntity.ok(userDTO))
+                .orElse(ResponseEntity.notFound().build());
 
-        User user= userDetailsServiceService.returnByUsername(username);
-
-        System.out.println(user.name);
-
-        //Since this is just the user registration we have no cars to send
-        List<Long> c = new ArrayList<Long>();
-
-        return ResponseEntity.ok(
-                new UserDTO(user.username,
-                        user.name,
-                        user.lastName,
-                        user.id,
-                        c
-                )
-
-        );
     }
 
 
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<UserDTO>> getAllUsers(
-    ){
-        List<UserDTO> dtoList = new ArrayList<>();
-
-        Iterable<User> userList = userRepository.findAll();
-
-        for(User user: userList){
-            UserDTO dto = new UserDTO(
-                    user.username,
-                    user.name,
-                    user.lastName,
-                    user.id,
-                    user.carIds()
-            );
-            dtoList.add(dto);
-        }
-
-        return ResponseEntity.ok(dtoList);
+    ) {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    @GetMapping("/api/user/getUser={username}")
+    public ResponseEntity<UserDTO> getSpecificUser(
+            @PathVariable String username) {
+               return  userService.getByUsername(username).map(userDTO ->
+                               ResponseEntity.ok(userDTO))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 
 }
