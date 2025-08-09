@@ -59,13 +59,39 @@
                 <button id="clearFilters">Clear Filters</button>
                 <button id="collapseFilters">Collapse Filters</button>
                 <button id="applyFilters">Apply filters</button>
+
+                <!-- New -->
+                <h3>Quick Sort</h3>
+                <div class="filter-controls">
+                <select id="sortOptions">
+                    <option value="">Select Sort Option</option>
+                    <optgroup label="Price">
+                        <option value="price-low-high">Price: Low to High</option>
+                        <option value="price-high-low">Price: High to Low</option>
+                    </optgroup>
+                    <optgroup label="Date">
+                        <option value="date-newest">Date: Newest First</option>
+                        <option value="date-oldest">Date: Oldest First</option>
+                    </optgroup>
+                    <optgroup label="Mileage">
+                        <option value="mileage-low-high">Mileage: Low to High</option>
+                        <option value="mileage-high-low">Mileage: High to Low</option>
+                    </optgroup>
+                    <optgroup label="Year">
+                        <option value="year-newest">Year: Newest First</option>
+                        <option value="year-oldest">Year: Oldest First</option>
+                    </optgroup>
+                </select>
+                <button id="applySort">Apply Sort</button>
+                <button id="resetSort">Reset Order</button>
+            </div>
+
             </div>
         </div>
 
         <div class="sidebar-section">
             <h3>Quote of the Day</h3>
             <div class="quote-of-the-day" id="quote-of-the-day">
-                "I really need to get a resource with safe, pg quotes" - bp
             </div>
         </div>
 
@@ -490,7 +516,7 @@
         const buttons = document.querySelectorAll('.filter-controls button');
         buttons.forEach(button => {
             button.addEventListener('click', function() {
-                console.log(`${this.textContent} button clicked`);
+                //console.log(`${this.textContent} button clicked`);
             });
         });
     });
@@ -507,6 +533,7 @@
 <script src="js/homeEventListener.js"></script>
 <script src="js/dailyQuoteZen.js"></script>
 <script src="/js/dynamicEntry.js"></script>
+
 
 <script>
     function toggleCollapsible(header) {

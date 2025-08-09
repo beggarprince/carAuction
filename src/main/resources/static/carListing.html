@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Car Listing - Car Marketplace</title>
+  <link rel="stylesheet" type="text/css" href="/css/home.css">
+  <link rel="stylesheet" type="text/css" href="/css/homeGrid.css">
+  <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="/css/collapsible.css">
+
+  <style>
+    /* Additional styles for car listing */
+    .listing-main {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 30px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .listing-header {
+      border-bottom: 2px solid #eee;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    .listing-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .listing-price {
+      font-size: 36px;
+      font-weight: bold;
+      color: #d4004b;
+      margin-bottom: 10px;
+    }
+
+    .listing-meta {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Image Gallery */
+    .image-gallery {
+      margin-bottom: 30px;
+    }
+
+    .main-image {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .thumbnail-container {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 5px 0;
+    }
+
+    .thumbnail {
+      width: 100px;
+      height: 75px;
+      object-fit: cover;
+      border: 2px solid #ddd;
+      cursor: pointer;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .thumbnail:hover,
+    .thumbnail.active {
+      border-color: #2c5aa0;
+    }
+
+    .specs-section {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .specs-section h3 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #2c5aa0;
+      padding-bottom: 10px;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .spec-value {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .spec-value.not-provided {
+      color: #999;
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .description-section {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .description-section h3 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .description-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #666;
+    }
+
+    /* Seller Info Box */
+    .seller-section {
+      background: #e6f2ff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .seller-section h3 {
+      font-size: 18px;
+      color: #2c5aa0;
+      margin-bottom: 15px;
+    }
+
+    .seller-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .seller-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #999;
+      border: 2px solid #2c5aa0;
+    }
+
+    .seller-details {
+      flex: 1;
+    }
+
+    .seller-name {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .seller-username {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .contact-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .contact-buttons button {
+      flex: 1;
+      min-width: 150px;
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .btn-primary {
+      background-color: #2c5aa0;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1a4480;
+    }
+
+    .btn-secondary {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e0e0e0;
+    }
+
+    /* Essential Info Bar */
+    .essential-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f0f0f0;
+      padding: 15px 20px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .essential-item {
+      text-align: center;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .essential-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2c5aa0;
+    }
+
+    .essential-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .specs-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+
+      .essential-info {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .essential-item {
+        width: 100%;
+      }
+
+      .listing-title {
+        font-size: 24px;
+      }
+
+      .listing-price {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<h1>Car Details</h1>
+
+<!-- Banner -->
+<div class="banner">
+  <div class="banner-content">
+    <div class="site-title">CIRCUS OF VALUE - Car Marketplace</div>
+    <div class="nav-links">
+      <a href="/home.html">Home</a>
+      <a href="/search.html">Search Cars</a>
+      <a id="tempRegCar" href="/uploadCar.html">Post A Car Listing</a>
+      <a href="#">Save Listing</a>
+      <a href="#">Share</a>
+      <button onclick="window.history.back()">Back to Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Container with Flexbox Layout -->
+<div class="main-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Quick Actions -->
+    <div class="sidebar-section">
+      <h3>Listing Actions</h3>
+      <div class="filter-controls">
+        <button id="saveListing">Save Listing</button>
+        <button id="shareListing">Share Listing</button>
+        <button id="printListing">Print Details</button>
+        <button id="reportListing">Report Listing</button>
+      </div>
+    </div>
+
+    <!-- Similar Listings
+    <div class="sidebar-section">
+      <h3>Similar Listings</h3>
+      <div id="similarListings" style="font-size: 14px; color: #666;">
+        Loading similar cars...
+      </div>
+    </div>
+        -->
+
+    <!-- Safety Tips -->
+    <div class="sidebar-section">
+      <h3>Safety Tips</h3>
+      <ul style="font-size: 12px; color: #666; line-height: 1.5;">
+        <li>Meet in a public place</li>
+        <li>Inspect the car thoroughly</li>
+        <li>Get a vehicle history report</li>
+        <li>Don't send payment before seeing the car</li>
+        <li>Bring a mechanic for inspection</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Main Listing Section -->
+    <div class="listing-main">
+      <!-- Listing Header -->
+      <div class="listing-header">
+        <div class="listing-title">
+          <span id="carYear">YEAR</span>
+          <span id="carMake">MAKE</span>
+          <span id="carModel">MODEL</span>
+        </div>
+        <div class="listing-price">$<span id="carPrice">0</span></div>
+        <div class="listing-meta">
+          Posted <span id="datePosted">recently</span> •
+          Listing ID: <span id="listingId">000000</span>
+        </div>
+      </div>
+
+      <!-- Essential Info Bar -->
+      <div class="essential-info">
+        <div class="essential-item">
+          <div class="essential-value" id="carMileage">0</div>
+          <div class="essential-label">Miles</div>
+        </div>
+        <div class="essential-item">
+          <div class="essential-value" id="carTransmission">Not Provided</div>
+          <div class="essential-label">Transmission</div>
+        </div>
+        <div class="essential-item">
+          <div class="essential-value" id="carFuel">Not Provided</div>
+          <div class="essential-label">Fuel Type</div>
+        </div>
+        <div class="essential-item">
+          <div class="essential-value" id="carDrive">Not Provided</div>
+          <div class="essential-label">Drive Type</div>
+        </div>
+      </div>
+
+      <!-- Image Gallery -->
+      <div class="image-gallery">
+        <div class="main-image" id="mainImageContainer">
+          <span style="color: #999; font-size: 48px;">🚗</span>
+        </div>
+        <div class="thumbnail-container" id="thumbnailContainer">
+        </div>
+      </div>
+    </div>
+
+    <!-- Description Section -->
+    <div class="description-section">
+      <h3>Description</h3>
+      <p class="description-text" id="carDescription">
+        No description provided for this listing. Contact the seller for more information about this vehicle.
+      </p>
+    </div>
+
+    <!-- Specifications Section -->
+    <div class="specs-section">
+      <h3>Vehicle Specifications</h3>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Make</div>
+          <div class="spec-value" id="specMake">MAKE</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Model</div>
+          <div class="spec-value" id="specModel">MODEL</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Year</div>
+          <div class="spec-value" id="specYear">YEAR</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Mileage</div>
+          <div class="spec-value" id="specMileage">0 miles</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Vehicle Type</div>
+          <div class="spec-value" id="carType">Not Provided</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Transmission</div>
+          <div class="spec-value" id="specTransmission">Not Provided</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Drive Type</div>
+          <div class="spec-value" id="specDrive">Not Provided</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Fuel Type</div>
+          <div class="spec-value" id="specFuel">Not Provided</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Engine</div>
+          <div class="spec-value" id="carCylinder">Not Provided</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Exterior Color</div>
+          <div class="spec-value" id="carColor">Not Provided</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Condition</div>
+          <div class="spec-value" id="carCondition">Not Provided</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Title Status</div>
+          <div class="spec-value" id="carTitle">Not Provided</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seller Information Section -->
+    <div class="seller-section">
+      <h3>Seller Information</h3>
+      <div class="seller-info">
+        <div class="seller-avatar">
+          <span>👤</span>
+        </div>
+        <div class="seller-details">
+          <div class="seller-name" id="sellerName">Seller Name</div>
+          <div class="seller-username">@<span id="sellerUsername">username</span></div>
+        </div>
+      </div>
+      <div class="contact-buttons">
+        <button class="btn-primary" id="contactSeller">Contact Seller</button>
+        <button class="btn-secondary" id="viewProfile">View Profile</button>
+        <button class="btn-secondary" id="viewOtherListings">Other Listings</button>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="sidebar-section" style="margin-top: 20px;">
+      <h3>Additional Information</h3>
+      <ul style="list-style: none; padding: 0; font-size: 14px; color: #666;">
+        <li style="margin-bottom: 10px;">
+          <strong>Listing ID:</strong> <span id="additionalListingId">000000</span>
+        </li>
+        <li style="margin-bottom: 10px;">
+          <strong>Posted:</strong> <span id="additionalDatePosted">Date</span>
+        </li>
+        <li style="margin-bottom: 10px;">
+          <strong>Views:</strong> <span id="viewCount">0</span>
+        </li>
+        <li style="margin-bottom: 10px;">
+          <strong>Saved:</strong> <span id="savedCount">0 times</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>Circus of Value Car Marketplace - Car Listing</p>
+</footer>
+
+<script src="js/appData.js"></script>
+<script src="js/mongoFetchPicture.js"></script>
+<script src="js/dateFormatter.js"></script>
+<script src="js/dataFetcher.js"></script>
+
+</body>
+</html>

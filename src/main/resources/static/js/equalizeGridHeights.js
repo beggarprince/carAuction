@@ -1,4 +1,7 @@
 function equalizeGridHeights() {
+
+    //console.log("Equalizing row height")
+
     const items = document.querySelectorAll('.item-card');
     let maxHeight = 0;
 

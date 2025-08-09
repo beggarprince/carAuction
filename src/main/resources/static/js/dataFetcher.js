@@ -1,12 +1,10 @@
 
 let buttonLock = false;
-
 const dataFetcher = {
 
         // Fetch cars data
         async fetchCars() {
             try {
-                document.getElementById('')
                 const fetchType = document.getElementById('fetchType').value;
                 const response = await fetch(`/cars/getList?filter=${fetchType}`, {
                     method: 'POST'
@@ -15,8 +13,28 @@ const dataFetcher = {
                 if (!response.ok) throw new Error('Failed to fetch cars');
 
                 const data = await response.json();
+
                 appData.cars = data;
-                console.log('Cars fetched:', data);
+
+                //console.log("fetching pics")
+                for(const cars of appData.cars){
+                    let pictureURL = cars.pictureURL
+
+                    if (pictureURL) {
+                        let mongoResponse;
+
+                        mongoResponse = await mongoDbFetchPicture(pictureURL); // URL or n/a
+
+                        if (mongoResponse !== "n/a") {
+                            cars.picture = mongoResponse;
+                        }
+                    } else {
+                        console.log("No image associated with car: " + title)
+                    }
+
+                }
+
+                //console.log('Cars fetched:', data);
                 return data;
             } catch (error) {
                 console.error('Could not fetch cars:', error);
@@ -35,7 +53,7 @@ const dataFetcher = {
 
                 const data = await response.json();
                 appData.users = data;
-                console.log('Users fetched:', data);
+               // console.log('Users fetched:', data);
                 return data;
             } catch (error) {
                 console.error('Could not fetch users:', error);
@@ -79,7 +97,7 @@ const dataFetcher = {
 
         async fetchAllData() {
 
-            console.log('All data fetched:', appData);
+           // console.log('All data fetched:', appData);
             this.displayAllData();
             return appData;
         },
@@ -137,12 +155,17 @@ const dataFetcher = {
         },
 
     //This is where we build the cards
-    //TODO atm we fetch from the mongodb everytime, it should instead cache some images
-        async displayAllAsCards() {
 
-            if(buttonLock) return
+        async displayCarsAsGrid() {
+
+            if(buttonLock) {
+                console.log('Button lock is true')
+                return;
+            }
 
             buttonLock = true;
+            //console.log("Displaying grid")
+
 
             const template = document.getElementById('carCardTemplate')
             const dataOutput = document.getElementById('dataOutput')
@@ -153,9 +176,9 @@ const dataFetcher = {
             grid.innerHTML = ""
             dataOutput.innerHTML = ""
 
+            const imageLoadPromises = [];
+
             for (const car of appData.cars) {
-
-
                 const card = template.content.cloneNode(true)
 
                // console.log(car + "\n")
@@ -172,7 +195,7 @@ const dataFetcher = {
 
                 //temp to differentiate
                 const description = car.description || "";
-                const pictureURL = car.pictureURL
+                const picture = car.picture  || null
 
 
                 const title = `${year} ${make} ${model}`
@@ -185,17 +208,17 @@ const dataFetcher = {
                     cardPrice.textContent = "$" + price
                 }
 
-                if (pictureURL) {
-                    let mongoResponse;
-                    mongoResponse = await mongoDbFetchPicture(pictureURL); // URL or n/a
+                if(picture){
+                    cardImage.src = picture;
 
-                    if (mongoResponse !== "n/a") {
-                        cardImage.src = mongoResponse;
-                       // cardImage.style.display = 'inline'
-                    }
-                } else {
-                    console.log("No image associated with car: " + title)
+                    // Add image load promise
+                    const imagePromise = new Promise((resolve) => {
+                        cardImage.onload = resolve;
+                        cardImage.onerror = resolve; // Resolve even on error
+                    });
+                    imageLoadPromises.push(imagePromise);
                 }
+
 
                 if(description){
                     cardDescription.textContent = description;
@@ -204,10 +227,14 @@ const dataFetcher = {
                     cardDatePosted.textContent = datePosted;
                 }
 
+
                 dataOutput.appendChild(card)
             }
 
+            await Promise.all(imageLoadPromises);
+
             buttonLock = false;
-        }
+        },
+
 
 }

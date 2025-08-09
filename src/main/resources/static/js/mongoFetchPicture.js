@@ -14,7 +14,7 @@
         if (!mongoResponse.ok) {
             return "n/a"
         }
-
+     //   console.log("Returning pic")
         const blob = await mongoResponse.blob();
 
         let ll  = URL.createObjectURL(blob)
