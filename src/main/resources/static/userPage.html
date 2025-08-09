@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile - Car Marketplace</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/homeGrid.css">
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="/css/collapsible.css">
+
+    <style>
+        /* Additional styles for user profile */
+        .profile-section {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #2c5aa0;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #999;
+            flex-shrink: 0;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .profile-username {
+            font-size: 18px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .profile-bio {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-left: 4px solid #2c5aa0;
+            margin-bottom: 20px;
+        }
+
+        .profile-bio h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-bio p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .user-listings-header {
+            background-color: #f0f0f0;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2c5aa0;
+        }
+
+        .user-listings-header h2 {
+            font-size: 22px;
+            color: #333;
+            margin: 0;
+        }
+
+        .listing-count {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<h1>User Profile</h1>
+
+<!-- Banner -->
+<div class="banner">
+    <div class="banner-content">
+        <div class="site-title">CIRCUS OF VALUE - Car Marketplace</div>
+        <div class="nav-links">
+            <a href="/home.html">Home</a>
+            <button>Dashboard</button>
+            <a id="tempRegCar" href="/uploadCar.html">Post A Car Listing</a>
+            <a href="#">Edit Profile</a>
+            <a href="#">Settings</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container with Flexbox Layout -->
+<div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- User Quick Actions -->
+        <div class="sidebar-section">
+            <h3>Profile Actions</h3>
+            <div class="filter-controls">
+                <button id="editProfile">Edit Profile</button>
+                <button id="addNewListing">Add New Listing</button>
+                <button id="viewMessages">View Messages</button>
+                <button id="manageListing">Manage Listings</button>
+            </div>
+        </div>
+
+        <!-- User Stats -->
+        <div class="sidebar-section">
+            <h3>Quick Stats</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">
+                    <strong>Member Since:</strong><br>
+                    <span id="memberSince" style="color: #666; font-size: 13px;">Loading...</span>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <strong>Total Views:</strong><br>
+                    <span id="totalViews" style="color: #2c5aa0; font-size: 18px; font-weight: bold;">0</span>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <strong>Response Rate:</strong><br>
+                    <span id="responseRate" style="color: #666; font-size: 13px;">N/A</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="sidebar-section">
+            <h3>Contact</h3>
+            <div style="font-size: 14px;">
+                <button id="sendMessage" style="width: 100%; padding: 8px; background-color: #2c5aa0; color: white; border: none; cursor: pointer; margin-bottom: 10px;">Send Message</button>
+                <button id="reportUser" style="width: 100%; padding: 8px; background-color: #f0f0f0; border: 1px solid #ccc; cursor: pointer;">Report User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <!-- Profile Picture Placeholder -->
+                <div class="profile-picture">
+                    <!-- <img src="/images/profile-placeholder.jpg" alt="Profile Picture" id="profilePicture"> -->
+                    <span>👤</span>
+                </div>
+
+                <div class="profile-info">
+                    <div class="profile-name">
+                        <span id="fname">FIRST</span> <span id="lname">LAST</span>
+                    </div>
+                    <div class="profile-username">
+                        (<span id="username">username</span>)
+                    </div>
+
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="listingCount">0</div>
+                            <div class="stat-label">Active Listings</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="soldCount">0</div>
+                            <div class="stat-label">Cars Sold</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="rating">N/A</div>
+                            <div class="stat-label">Rating</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bio Section -->
+            <div class="profile-bio">
+                <h3>About</h3>
+                <p id="bio">This is my bio. It's nice to meet you</p>
+            </div>
+        </div>
+
+        <!-- User's Listings Section -->
+        <div class="user-listings-header">
+            <h2>My Car Listings</h2>
+            <div class="listing-count">
+                Showing <span id="displayedListings">0</span> listings
+            </div>
+        </div>
+
+        <!-- Car Listings Grid -->
+        <div id="userCardContainer">
+            <div class="items-grid" id="userItemsGrid">
+
+            </div>
+        </div>
+
+        <div id="emptyState" style="display: none; text-align: center; padding: 40px; background: #f9f9f9; border: 2px dashed #ddd; margin: 20px 0;">
+            <h3 style="color: #666;">No Listings Yet</h3>
+            <p style="color: #999; margin: 10px 0;">This user hasn't posted any car listings.</p>
+        </div>
+
+        <div id="dataOutput" class="dataOutput"></div>
+    </div>
+</div>
+
+<!-- Car Card Template -->
+<template id="carCardTemplate">
+    <div class="item-card">
+        <h4 id="cardTitle"></h4>
+        <img class="l2" src="/images/tempCars/accord2.jpg" alt="Car" id="cardImage">
+        <div class="price" id="cardPrice">$2000</div>
+        <div class="description" id="cardDescription">Description</div>
+        <div class="meta" id="datePosted">Posted recently</div>
+    </div>
+</template>
+
+<!-- Footer -->
+<footer>
+    <p>Circus of Value Car Marketplace - User Profile</p>
+</footer>
+<script src="js/appData.js"></script>
+<script src="/js/equalizeGridHeights.js"></script>
+<script src="js/mongoFetchPicture.js"></script>
+<script src="js/dateFormatter.js"></script>
+<script src="js/dataFetcher.js"></script>
+<script src="/js/userFetcher.js"></script>
+<script src="/js/userPage.js"></script>
+
+</body>
+</html>

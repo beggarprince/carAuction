@@ -15,7 +15,7 @@ async function handleUserPage(){
 	btnEvent.addEventListener('click', async() =>{
 	//get user
 	
-	getSpecificUser(uid.value);
+	await getSpecificUser(uid.value);
 
 	//Since i know i want the user cars i don't need to collect form data
 	
