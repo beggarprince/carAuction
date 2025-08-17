@@ -1,12 +1,14 @@
 package aaa.pfa.carAuctionBackend.controller;
 
 
+import aaa.pfa.carAuctionBackend.DTO.PictureDTO;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import aaa.pfa.carAuctionBackend.DTO.UserDTO;
 import aaa.pfa.carAuctionBackend.services.UserDetailsServiceService;
 import aaa.pfa.carAuctionBackend.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -70,4 +72,13 @@ public class UserController {
     }
 
 
+    @PostMapping("/uploadUserPic")
+    public ResponseEntity<Void> uploadUserPic(
+            @Valid
+            @RequestBody PictureDTO dto){
+        if(userService.uploadUserProfilePic(dto)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 }

@@ -65,7 +65,7 @@ public class MongoDbImageController {
             ) throws IOException{
 
         return ResponseEntity.ok(Collections.singletonMap(
-                "ids",
+                "pictureURLs",
                 mongoDbImageService.uploadMultiplePics(files, owner)
                 ));
     }

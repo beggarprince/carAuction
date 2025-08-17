@@ -9,7 +9,6 @@ import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -188,13 +187,13 @@ public class CarService {
         );
     }
 
-    public Boolean uploadCarPics(CarPictureDTO dto){
+    public Boolean uploadCarPics(PictureDTO dto){
 
         //Get car
-        Car car = carRepository.findById(dto.carId()).orElse(null);
+        Car car = carRepository.findById(dto.id()).orElse(null);
 
         if(car != null) {
-            car.setPictureURL(dto.ids());
+            car.setPictureURL(dto.pictureURLs());
             carRepository.save(car);
             return true;
         }

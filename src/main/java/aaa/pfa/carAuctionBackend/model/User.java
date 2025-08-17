@@ -28,6 +28,9 @@ public class User {
     @Column(nullable = false)
     public String role;
 
+    @Column(nullable = true)
+    public String profilePicUrl;
+
     public User(){};
 
     public User(String username, String password, String role, String name, String lastName){
@@ -55,5 +58,9 @@ public class User {
 
     public void addCarToUser(Car car) {
         cars.add(car);
+    }
+
+    public void setPictureUrl(String string) {
+        profilePicUrl = string;
     }
 }

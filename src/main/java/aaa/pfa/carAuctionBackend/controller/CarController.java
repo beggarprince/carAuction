@@ -1,8 +1,6 @@
 package aaa.pfa.carAuctionBackend.controller;
 
 import aaa.pfa.carAuctionBackend.DTO.*;
-import aaa.pfa.carAuctionBackend.model.Car;
-import aaa.pfa.carAuctionBackend.repository.CarRepository;
 import aaa.pfa.carAuctionBackend.services.CarService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -50,7 +47,7 @@ public class CarController {
     @PostMapping("/cars/uploadPhotos")
     public ResponseEntity<Void> uploadCarPics(
             @Valid
-            @RequestBody CarPictureDTO dto
+            @RequestBody PictureDTO dto
             ){
 
         if(carService.uploadCarPics(dto)){

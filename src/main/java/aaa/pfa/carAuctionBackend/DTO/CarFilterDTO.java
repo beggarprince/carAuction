@@ -2,6 +2,7 @@ package aaa.pfa.carAuctionBackend.DTO;
 
 import java.util.List;
 
+//Car SQL query
 public record CarFilterDTO(
         List<String> carType,
         List<String> make,

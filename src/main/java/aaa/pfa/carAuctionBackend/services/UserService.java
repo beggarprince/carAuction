@@ -1,12 +1,14 @@
 package aaa.pfa.carAuctionBackend.services;
 
 
+import aaa.pfa.carAuctionBackend.DTO.PictureDTO;
 import aaa.pfa.carAuctionBackend.DTO.UserDTO;
 import aaa.pfa.carAuctionBackend.DTO.UserRegisterDTO;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,12 +95,19 @@ public class UserService {
 
     public UserDTO createUserDTO(User user){
 
+        //Check for pic url
+
         return new UserDTO(user.username,
                 user.name,
                 user.lastName,
                 user.id,
-                user.carIds()
+                user.carIds(),
+                ""//Users can upload pfp later, not on sign up form
                 );
+    }
+
+    private void checkForUserPicURL(){
+
     }
 
     public Optional<UserDTO> currentUser(Authentication authentication){
@@ -117,5 +126,18 @@ public class UserService {
         }
 
         return (dtoList);
+    }
+
+    public Boolean uploadUserProfilePic(@Valid PictureDTO dto) {
+        //Get user
+        User u = userRepository.findById(dto.id()).orElse(null);
+
+        if(u != null){
+            var pic = dto.pictureURLs().getFirst();
+            u.setPictureUrl(pic);
+            return true;
+        }
+
+        return false;
     }
 }
