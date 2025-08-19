@@ -2,6 +2,7 @@ package aaa.pfa.carAuctionBackend.services;
 
 
 import aaa.pfa.carAuctionBackend.DTO.PictureDTO;
+import aaa.pfa.carAuctionBackend.DTO.ProfilePictureDTO;
 import aaa.pfa.carAuctionBackend.DTO.UserDTO;
 import aaa.pfa.carAuctionBackend.DTO.UserRegisterDTO;
 import aaa.pfa.carAuctionBackend.model.User;
@@ -128,15 +129,22 @@ public class UserService {
         return (dtoList);
     }
 
-    public Boolean uploadUserProfilePic(@Valid PictureDTO dto) {
+    public Boolean uploadUserProfilePic(@Valid ProfilePictureDTO dto) {
+        var s = String.format("Updating userid: %d with the profilepicurl:%s", dto.id(),dto.url());
+        System.out.println(s);
         //Get user
         User u = userRepository.findById(dto.id()).orElse(null);
 
         if(u != null){
-            var pic = dto.pictureURLs().getFirst();
+            var pic = dto.url();
             u.setPictureUrl(pic);
+            userRepository.save(u);
+            System.out.println("Set user pfp");
+
             return true;
         }
+        System.out.println("User was null");
+
 
         return false;
     }

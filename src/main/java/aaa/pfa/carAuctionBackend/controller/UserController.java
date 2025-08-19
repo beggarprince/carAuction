@@ -2,6 +2,7 @@ package aaa.pfa.carAuctionBackend.controller;
 
 
 import aaa.pfa.carAuctionBackend.DTO.PictureDTO;
+import aaa.pfa.carAuctionBackend.DTO.ProfilePictureDTO;
 import aaa.pfa.carAuctionBackend.model.Car;
 import aaa.pfa.carAuctionBackend.model.User;
 import aaa.pfa.carAuctionBackend.repository.UserRepository;
@@ -75,7 +76,7 @@ public class UserController {
     @PostMapping("/uploadUserPic")
     public ResponseEntity<Void> uploadUserPic(
             @Valid
-            @RequestBody PictureDTO dto){
+            @RequestBody ProfilePictureDTO dto){
         if(userService.uploadUserProfilePic(dto)){
             return ResponseEntity.ok().build();
         }

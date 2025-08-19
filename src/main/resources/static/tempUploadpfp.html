@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Picture Upload</title>
+</head>
+<body>
+  <input type="file" id="imgInput" accept="image/*">
+  <button id="uploadBtn" type="submit">Upload</button>
+
+<p id="owner" value ="">Id</p>
+
+  <br>
+  <input type="text" id="idInput" placeholder="Enter Picture ID" value ="68a164376e57e5a80105a147">
+  <button id="btn">Fetch Pic</button><br>
+  <img id="image">
+
+  <button id="link" type="button">Link pic to user</button>
+
+  <script>
+    console.log("Setting id")
+    const on = document.getElementById('owner')
+    on.innerText=localStorage.getItem("id")
+    on.value = localStorage.getItem("id")
+  </script>
+
+  <script src="/js/picUpload.js"></script>
+
+<script>
+
+  const linkBtn = document.getElementById('link')
+  linkBtn.addEventListener('click', async () =>{
+    const ownerId = localStorage.getItem("id")
+    const pictureId = idInput.value
+
+    console.log(`Linking picture: ${idInput.value} with inner text ${idInput.innerText}`)
+      if(ownerId === null) console.log(`ownerId is null`)
+      
+    try{
+      const updatedUserBody = {
+        id: ownerId,
+        url: pictureId
+      }
+
+      const userLinkResponse = await fetch ('/api/users/uploadUserPic',
+              {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updatedUserBody)
+              });
+
+      if(!userLinkResponse.ok){
+        console.log(await userLinkResponse.text());
+      }
+      console.log(`Updated user ${ownerId} with pic url:${pictureId}`)
+
+      await console.log(JSON.stringify(userLinkResponse));
+
+
+    }catch(err){
+      console.log('Could not link user profile picture to the user but pic is in db')
+      console.error('Error: ', err)
+    }
+
+  })
+</script>
+</body>
+</html>

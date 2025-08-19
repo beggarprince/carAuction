@@ -61,6 +61,6 @@ public class User {
     }
 
     public void setPictureUrl(String string) {
-        profilePicUrl = string;
+        this.profilePicUrl = string;
     }
 }

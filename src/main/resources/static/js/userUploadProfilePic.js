@@ -1,8 +1,11 @@
 
-const picture = document.getElementById("pictureInput")
-const ownerId = localStorage.getItem("id")
+const a = document.getElementById('a')
 
-form.addEventListener('submit', async(e) =>{
+a.addEventListener('click', async() =>{
+
+    const picture = document.getElementById("pictureInputUser")
+    const ownerId = localStorage.getItem("id")
+    console.log("Running upload pfp")
     if(ownerId === null) return
     if(picture.files === null) return;
 
@@ -56,7 +59,7 @@ form.addEventListener('submit', async(e) =>{
         }
 
     }catch(err){
-        console.error('Error: ", err')
+        console.error('Error: ', err)
     }
 
 })

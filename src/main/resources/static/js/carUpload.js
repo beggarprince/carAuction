@@ -129,7 +129,7 @@ form.addEventListener('submit', async (e) => {
 
         try{
             const pictureUpdateBody = {
-                carId: carId,
+                id: carId,
                 ids: pictureId
             }
 
